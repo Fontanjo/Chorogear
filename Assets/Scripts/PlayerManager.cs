@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         Debug.Log("Starting player");
-        deck = new Deck();
+        deck = gameObject.AddComponent<Deck>();
     }
 
     public Deck Deck()

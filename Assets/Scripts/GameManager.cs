@@ -28,8 +28,6 @@ public class GameManager : MonoBehaviour
         // Select initial state
         currentState = State.PLAYER1;
 
-        // Load
-
         // Draw cards, update UI, ...
         UpdateUI();
     }
@@ -41,10 +39,10 @@ public class GameManager : MonoBehaviour
         switch(currentState)
         {
             case State.PLAYER1:
-                Debug.Log("p1 playing");
+                // Debug.Log("p1 playing");
                 break;
             case State.PLAYER2:
-                Debug.Log("p2 playing");
+                // Debug.Log("p2 playing");
                 break;
         }
     }

@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deck
+public class Deck : MonoBehaviour
 {
     public List<Card> cards;
 
     // Start is called before the first frame update
-    public Deck()
+    void Start()
     {
         cards = new List<Card>();
         Debug.Log("Deck created");
