@@ -946,6 +946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a7036cbe624e5a2eb5c1e243296cd2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardsEachTurn: 5
 --- !u!4 &373309526
 Transform:
   m_ObjectHideFlags: 0
@@ -1540,8 +1541,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7089c429accec902a76eff2aad093fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 0}
-  player2: {fileID: 0}
+  p1: {fileID: 1095805514}
+  p2: {fileID: 373309525}
+  newCardsGO: {fileID: 73925096}
 --- !u!4 &685728264
 Transform:
   m_ObjectHideFlags: 0
@@ -2525,6 +2527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a7036cbe624e5a2eb5c1e243296cd2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardsEachTurn: 5
 --- !u!4 &1095805515
 Transform:
   m_ObjectHideFlags: 0
