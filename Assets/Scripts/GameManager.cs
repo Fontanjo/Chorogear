@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
             Transform nc = Instantiate(card_GO.GetComponent<Transform>(), new Vector3(0, 0, 0), Quaternion.identity, newCardsContainer_GO.GetComponent<Transform>());
             // nc.gameObject.name = "Card name";
             CardManager cm = nc.gameObject.GetComponent<CardManager>();
-            cm.Init(c.value);
+            cm.Init(c.value, c.type);
         }
 
         // TODO: show cards in editor
@@ -104,6 +104,22 @@ public class GameManager : MonoBehaviour
         switch(currentState)
         {
             case State.PLAYER1:
+                List<GameObject> toDestroy = new List<GameObject>();
+                // Add remaining card back to deck
+                foreach (Transform child in newCardsContainer_GO.transform)
+                {
+                    CardManager cm = child.gameObject.GetComponent<CardManager>();
+                    // TODO: check if card manager found
+
+                    // Add card to deck
+                    p1.deck.AddCard(new Card(cm.cardValue, cm.cardType));
+
+                    toDestroy.Add(child.gameObject);
+                }
+
+                // Destroy all children
+                toDestroy.ForEach(c => Object.Destroy(c.gameObject));
+
                 currentState = State.PLAYER2;
                 break;
             case State.PLAYER2:
@@ -129,19 +145,31 @@ public class GameManager : MonoBehaviour
         Debug.Log("New card clicked");
 
         // TODO: show selectors only if selected card is a "play immediately" and not an "attack"/...
-        switch(currentState)
+        // TODO: 
+
+        switch (selectedCard.cardType)
         {
-            case State.PLAYER1:
-                foreach (GameObject go in selectors_p1)
+            case CardManager.CardType.CREATURE:
+            case CardManager.CardType.PASSIV:
+                switch(currentState)
                 {
-                    go.SetActive(true);
+                    case State.PLAYER1:
+                        foreach (GameObject go in selectors_p1)
+                        {
+                            go.SetActive(true);
+                        }
+                        break;
+                    case State.PLAYER2:
+                        foreach (GameObject go in selectors_p2)
+                        {
+                            go.SetActive(true);
+                        }
+                        break;
                 }
                 break;
-            case State.PLAYER2:
-                foreach (GameObject go in selectors_p2)
-                {
-                    go.SetActive(true);
-                }
+            case CardManager.CardType.INSTANTANEOUS:
+                Debug.Log("Instantaneous card");
+                // TODO: implement
                 break;
         }
     }
@@ -150,7 +178,6 @@ public class GameManager : MonoBehaviour
     public void DeselectCard()
     {
         selectedCard = null;
-        Debug.Log("All cards deselected");
 
         switch(currentState)
         {
@@ -167,8 +194,6 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
-
-        // TODO: hide where it can be played
     }
 
     public void PlaceSelectedCard(Transform parent, int row, int col)
@@ -185,10 +210,11 @@ public class GameManager : MonoBehaviour
         rt.anchorMax = new Vector2(0.5f, 0.5f);
         rt.pivot = new Vector2(0.5f, 0.5f);
 
-        //
+        // Reset position
         selectedCard.gameObject.transform.localPosition = new Vector3(0, 0, 0);
 
-        // TODO: deselect card
+        // Deselect card
+        DeselectCard();
 
         // TODO: apply effects
     }

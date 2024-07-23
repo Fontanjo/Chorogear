@@ -16,9 +16,9 @@ public class SO_Deck : ScriptableObject
         cards = new List<Card>();
 
         // TODO: init cards
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 30; i++)
         {
-            AddCard(new Card(i));
+            AddCard(new Card(i, CardManager.CardType.CREATURE));
         }
     }
 
@@ -63,9 +63,11 @@ public class SO_Deck : ScriptableObject
 public struct Card
 {
     public int value;
+    public CardManager.CardType type;
 
-    public Card(int val)
+    public Card(int val, CardManager.CardType cardType)
     {
         value = val;
+        type = cardType;
     }
 }

@@ -6,13 +6,23 @@ using TMPro;
 
 public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    
+    public enum CardType
+    {
+        CREATURE, PASSIV, INSTANTANEOUS
+    }
+
     [SerializeField] private TextMeshProUGUI valueText;
+
+    public int cardValue;
+    public CardType cardType;
     
-    public void Init(int value)
+    public void Init(int value, CardType type)
     {
         Debug.Log("Initializing card");
         valueText.text= "" + value;
+        cardValue = value;
+
+        cardType = type;
     }
 
     //Detect if the Cursor starts to pass over the GameObject
