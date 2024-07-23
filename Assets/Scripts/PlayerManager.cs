@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public Deck deck;
+    public SO_Deck deck;
 
     // There might be modifiers influencing this
     public int cardsEachTurn = 5;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Debug.Log("Starting player");
-        deck = gameObject.AddComponent<Deck>();
+        // deck = gameObject.AddComponent<Deck>();
+        // TODO: check if deck assigned
+        deck.Init();
     }
 
-    public Deck Deck()
+    public SO_Deck Deck()
     {
         return deck;
     }

@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour
     public PlayerManager p1; 
     public PlayerManager p2;
 
-    [Header("UI elements")]
-    public GameObject newCardsGO;
+    [Header("Prefabs")]
+    [SerializeField] private GameObject card_GO;
+    [SerializeField] private GameObject newCardsContainer_GO;
 
     public enum State
     {
@@ -50,7 +51,7 @@ public class GameManager : MonoBehaviour
     public void UpdateUI()
     {
         // Initialize with p1 values
-        Deck deck = p1.Deck();
+        SO_Deck deck = p1.Deck();
         int nbCards = p1.NbOfCards();
         
         // Select correct values based on current player
@@ -71,6 +72,15 @@ public class GameManager : MonoBehaviour
 
         // Pick (5) cards
         List<Card> newCards = deck.PickCards(nbCards);
+
+        foreach (Card c in newCards)
+        {
+            // TODO: instantiate and initialize a card prefab
+            Debug.Log("Picked card with value" + c.value);
+
+            Transform nc = Instantiate(card_GO.GetComponent<Transform>(), new Vector3(0, 0, 0), Quaternion.identity, newCardsContainer_GO.GetComponent<Transform>());
+            nc.gameObject.name = "Card name";
+        }
 
         // TODO: show cards in editor
     }
