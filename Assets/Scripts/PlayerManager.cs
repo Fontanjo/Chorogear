@@ -9,6 +9,8 @@ public class PlayerManager : MonoBehaviour
     // There might be modifiers influencing this
     public int cardsEachTurn = 5;
 
+    public int hp = 10;
+
     // Start is called before the first frame update
     void Awake()
     {

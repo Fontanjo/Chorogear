@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ using UnityEngine;
 public class SO_Deck : ScriptableObject
 {
     public List<Card> cards;
+
+    private static System.Random rng = new System.Random();
 
     // Start is called before the first frame update
     public void Init()
@@ -22,9 +25,10 @@ public class SO_Deck : ScriptableObject
         }
     }
 
+    /// Shuffle the cards in the deck
     public void Shuffle()
     {
-        // TODO: shuffle list
+        cards = cards.OrderBy(_ => rng.Next()).ToList();
     }
 
     public Card PickCard()
