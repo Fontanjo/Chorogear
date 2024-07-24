@@ -16,13 +16,8 @@ public class SO_Deck : ScriptableObject
     public void Init()
     {
         // TODO: do not reinitialize each time if not necessary (or yes? TBD)
-        cards = new List<Card>();
-
-        // TODO: init cards
-        for (int i = 0; i < 30; i++)
-        {
-            AddCard(new Card(i, CardManager.CardType.CREATURE));
-        }
+        // Generate new deck copying the existing cards (do not take direclty CardLoader list to avoid aliasing)
+        cards = CardCsvLoader.Instance.Cards.ConvertAll(card => new Card(card.value, card.type, card.name, card.effect));
     }
 
     /// Shuffle the cards in the deck
@@ -64,14 +59,18 @@ public class SO_Deck : ScriptableObject
     }
 }
 
-public struct Card
+public class Card
 {
     public int value;
     public CardManager.CardType type;
+    public string name = "";
+    public string effect = "";
 
-    public Card(int val, CardManager.CardType cardType)
+    public Card(int val, CardManager.CardType cardType, string name = "no name", string effect = "no effect")
     {
-        value = val;
-        type = cardType;
+        this.value = val;
+        this.type = cardType;
+        this.name = name;
+        this.effect = effect;
     }
 }
