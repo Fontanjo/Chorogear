@@ -17,7 +17,7 @@ public class SO_Deck : ScriptableObject
     {
         // TODO: do not reinitialize each time if not necessary (or yes? TBD)
         // Generate new deck copying the existing cards (do not take direclty CardLoader list to avoid aliasing)
-        cards = CardCsvLoader.Instance.Cards.ConvertAll(card => new Card(card.value, card.type, card.name, card.effect));
+        cards = CardCsvLoader.Instance.Cards.ConvertAll(card => new Card(card.id, card.value, card.type, card.name, card.effect));
     }
 
     /// Shuffle the cards in the deck
@@ -61,13 +61,15 @@ public class SO_Deck : ScriptableObject
 
 public class Card
 {
+    public int id;
     public int value;
     public CardManager.CardType type;
     public string name = "";
     public string effect = "";
 
-    public Card(int val, CardManager.CardType cardType, string name = "no name", string effect = "no effect")
+    public Card(int id, int val, CardManager.CardType cardType, string name = "no name", string effect = "no effect")
     {
+        this.id = id;
         this.value = val;
         this.type = cardType;
         this.name = name;

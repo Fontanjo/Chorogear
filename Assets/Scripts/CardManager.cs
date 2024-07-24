@@ -19,14 +19,17 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI effectText;
 
+    public int cardId;
     public int cardValue;
     public CardType cardType;
     public string cardName;
     public string cardEffect;
     
-    public void Init(int value, CardType type, string name = "", string effect = "")
+    public void Init(int id, int value, CardType type, string name = "", string effect = "")
     {
         Debug.Log("Initializing card");
+
+        cardId = id;
 
         valueText.text = "" + value;
         cardValue = value;
@@ -65,5 +68,21 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         // TODO: check if button is assigned
         cardButton.interactable = false;
+    }
+
+    public void Highlight()
+    {
+        // TODO: handle rt not found
+        RectTransform rt = gameObject.GetComponent<RectTransform>();
+
+        rt.localScale = new Vector3(1.2f, 1.2f, 1.0f);
+    }
+
+    public void DeHighlight()
+    {
+        // TODO: handle rt not found
+        RectTransform rt = gameObject.GetComponent<RectTransform>();
+
+        rt.localScale = new Vector3(1.0f, 1.0f, 1.0f);
     }
 }

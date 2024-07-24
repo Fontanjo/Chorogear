@@ -25,39 +25,39 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
+    // Currently selected card
     public CardManager selectedCard;
+
+    // Keep track of cards on the table
+    private CardManager[,] boardP1 = new CardManager[3, 2];
+    private CardManager[,] boardP2 = new CardManager[3, 2];
 
     // Start is called before the first frame update
     void Start()
     {
-        // Some initialization
-        // TODO: ensure players are selected
-
-
         // Select initial state
         currentState = State.PLAYER1;
 
         // Draw cards, update UI, ...
         UpdateUI();
         HideSelectors();
-        HideSelectors();
         DeselectCard();
     }
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        switch(currentState)
-        {
-            case State.PLAYER1:
-                // Debug.Log("p1 playing");
-                break;
-            case State.PLAYER2:
-                // Debug.Log("p2 playing");
-                break;
-        }
-    }
+    // // Update is called once per frame
+    // void Update()
+    // {
+    //     switch(currentState)
+    //     {
+    //         case State.PLAYER1:
+    //             // Debug.Log("p1 playing");
+    //             break;
+    //         case State.PLAYER2:
+    //             // Debug.Log("p2 playing");
+    //             break;
+    //     }
+    // }
 
     public void UpdateUI()
     {
@@ -87,25 +87,23 @@ public class GameManager : MonoBehaviour
         // Show cards in editor
         foreach (Card c in newCards)
         {
-            // TODO: instantiate and initialize a card prefab
-            Debug.Log("Picked card with value" + c.value);
-
+            // Instantiate and initialize a card prefab
             Transform nc = Instantiate(card_GO.GetComponent<Transform>(), new Vector3(0, 0, 0), Quaternion.identity, newCardsContainer_GO.GetComponent<Transform>());
-            nc.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(77, 110); // 110 forced by horizontal layout
+            nc.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(70, 100);
+            
+            // Set values to prefab
             CardManager cm = nc.gameObject.GetComponent<CardManager>();
-            cm.Init(c.value, c.type, c.name, c.effect);
+            cm.Init(c.id, c.value, c.type, c.name, c.effect);
         }
     }
 
     // Move the game to the next state
     public void NextState()
     {
-        // TODO: put remaining cards back in deck
-        // TODO: move to next state
-
         List<GameObject> toDestroy = new List<GameObject>();
         SO_Deck current_player_deck = p1.deck; // initialize with p1, possibly change in switch
 
+        // Move to next state
         switch(currentState)
         {
             case State.PLAYER1:
@@ -125,19 +123,18 @@ public class GameManager : MonoBehaviour
         // Add remaining card back to deck
         foreach (Transform child in newCardsContainer_GO.transform)
         {
+            // TODO: ensure child is a card prefab / contains a card manager
             CardManager cm = child.gameObject.GetComponent<CardManager>();
-            // TODO: check if card manager found
 
             // Add card to deck
-            current_player_deck.AddCard(new Card(cm.cardValue, cm.cardType));
+            current_player_deck.AddCard(new Card(cm.cardId, cm.cardValue, cm.cardType, cm.cardName, cm.cardEffect));
 
+            // Mark as object to destroy. Can not destroy directly while iterating
             toDestroy.Add(child.gameObject);
         }
 
         // Destroy all children
         toDestroy.ForEach(c => Object.Destroy(c.gameObject));
-
-
 
         // Pick and draw new cards, update UI, ...
         UpdateUI();
@@ -153,11 +150,16 @@ public class GameManager : MonoBehaviour
     /// This facilitates placing it on the board
     public void SetSelectedCard(CardManager card)
     {
+        // Deselect previous card
+        DeselectCard();
+
+        // Select new card
         selectedCard = card;
         Debug.Log("New card clicked");
 
-        // TODO: highlight/show selected card
-        // ev. deselect previously selected card
+        // Highlight/show selected card
+        selectedCard.Highlight();
+        
         
         // Show correct selectors
         HideSelectors();
@@ -171,6 +173,7 @@ public class GameManager : MonoBehaviour
                 break;
             case CardManager.CardType.INSTANTANEOUS:
                 Debug.Log("Instantaneous card");
+                ShowActivableCards(currentState);
                 // TODO: implement
                 break;
         }
@@ -179,6 +182,9 @@ public class GameManager : MonoBehaviour
     // Remove selected card
     public void DeselectCard()
     {
+        if (selectedCard != null)
+            selectedCard.DeHighlight();
+    
         selectedCard = null;
     }
 
@@ -259,10 +265,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ShowActivableCards(State player)
+    {
+        switch(player)
+        {
+            case State.PLAYER1:
+                Debug.Log("Activable cards for p1");
+                break;
+            case State.PLAYER2:
+                Debug.Log("Activable cards for p2");
+                break;
+        }
+    }
+
     public void PlaceSelectedCard(Transform parent, int row, int col)
     {
-        Debug.Log("Placing selected card! (" + row + "," + col + ")");
-        // TODO: check if a card is selected
+        // Don't do anything if no cards selected
+        if (selectedCard == null)
+            return;
+
+        // Add card to board
+        switch (currentState)
+        {
+            case State.PLAYER1:
+                boardP1[row, col] = selectedCard;
+                break;
+            case State.PLAYER2:
+                boardP2[row, col] = selectedCard;
+                break;
+        }
 
         // Place selected card as child of the provided parent
         selectedCard.gameObject.transform.SetParent(parent);

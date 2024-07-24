@@ -43,13 +43,13 @@ public class CardCsvLoader : MonoBehaviour
                 CardManager.CardType type = CardManager.CardType.CREATURE;
                 switch(splitData[0])
                 {
-                    case "Créature":
+                    case "Creature":
                         type = CardManager.CardType.CREATURE;
                         break;
                     case "Passif":
                         type = CardManager.CardType.PASSIV;
                         break;
-                    case "Instantané":
+                    case "Instantane":
                         type = CardManager.CardType.INSTANTANEOUS;
                         break;         
                 };
@@ -57,8 +57,9 @@ public class CardCsvLoader : MonoBehaviour
                 string name = splitData[1];
                 string effect = splitData[2];
                 int damage = Convert.ToInt32(splitData[3]);
+                int id = Convert.ToInt32(splitData[4]);
                 
-                Cards.Add(new Card(damage, type, name, effect));
+                Cards.Add(new Card(id, damage, type, name, effect));
             }
             catch (Exception e)
             {
