@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
@@ -10,6 +11,8 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         CREATURE, PASSIV, INSTANTANEOUS
     }
+
+    [SerializeField] private Button cardButton;
 
     [SerializeField] private TextMeshProUGUI valueText;
     // [SerializeField] private TextMeshProUGUI typeText;
@@ -42,7 +45,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         // TODO: make card bigger
         //Output to console the GameObject's name and the following message
-        Debug.Log("Cursor Entering " + name + " GameObject");
+        Debug.Log("Cursor Entering " + cardName + " GameObject");
     }
 
     //Detect when Cursor leaves the GameObject
@@ -50,11 +53,17 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         // TODO: reset original size
         //Output the following message with the GameObject's name
-        Debug.Log("Cursor Exiting " + name + " GameObject");
+        Debug.Log("Cursor Exiting " + cardName + " GameObject");
     }
 
     public void AddSelfToGameManager()
     {
         GameManager.Instance.SetSelectedCard(this);
+    }
+
+    public void PreventSelection()
+    {
+        // TODO: check if button is assigned
+        cardButton.interactable = false;
     }
 }

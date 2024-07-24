@@ -39,8 +39,8 @@ public class GameManager : MonoBehaviour
 
         // Draw cards, update UI, ...
         UpdateUI();
-        HideSelectors(State.PLAYER1);
-        HideSelectors(State.PLAYER2);
+        HideSelectors();
+        HideSelectors();
         DeselectCard();
     }
 
@@ -159,13 +159,15 @@ public class GameManager : MonoBehaviour
         // TODO: highlight/show selected card
         // ev. deselect previously selected card
         
-        // TODO: show selectors only if selected card is a "play immediately" and not an "attack"/...
-
+        // Show correct selectors
+        HideSelectors();
         switch (selectedCard.cardType)
         {
             case CardManager.CardType.CREATURE:
+                ShowCreatureSelectors(currentState);
+                break;
             case CardManager.CardType.PASSIV:
-                ShowSelectors(currentState);
+                ShowPassivSelectors(currentState);
                 break;
             case CardManager.CardType.INSTANTANEOUS:
                 Debug.Log("Instantaneous card");
@@ -180,22 +182,15 @@ public class GameManager : MonoBehaviour
         selectedCard = null;
     }
 
-    private void HideSelectors(State player)
+    private void HideSelectors()
     {
-        switch(player)
+        foreach (GameObject go in selectors_p1)
         {
-            case State.PLAYER1:
-                foreach (GameObject go in selectors_p1)
-                {
-                    go.SetActive(false);
-                }
-                break;
-            case State.PLAYER2:
-                foreach (GameObject go in selectors_p2)
-                {
-                    go.SetActive(false);
-                }
-                break;
+            go.SetActive(false);
+        }
+        foreach (GameObject go in selectors_p2)
+        {
+            go.SetActive(false);
         }
     }
 
@@ -213,6 +208,52 @@ public class GameManager : MonoBehaviour
                 foreach (GameObject go in selectors_p2)
                 {
                     go.SetActive(true);
+                }
+                break;
+        }
+    }
+
+    private void ShowCreatureSelectors(State player)
+    {
+        switch(player)
+        {
+            case State.PLAYER1:
+                foreach (GameObject go in selectors_p1)
+                {
+                    // Show only front line
+                    if (go.GetComponent<PlaceSelector>().Col() == 0)
+                        go.SetActive(true);
+                }
+                break;
+            case State.PLAYER2:
+                foreach (GameObject go in selectors_p2)
+                {
+                    // Show only front line
+                    if (go.GetComponent<PlaceSelector>().Col() == 0)
+                        go.SetActive(true);
+                }
+                break;
+        }
+    }
+
+    private void ShowPassivSelectors(State player)
+    {
+        switch(player)
+        {
+            case State.PLAYER1:
+                foreach (GameObject go in selectors_p1)
+                {
+                    // Show only front line
+                    if (go.GetComponent<PlaceSelector>().Col() == 1)
+                        go.SetActive(true);
+                }
+                break;
+            case State.PLAYER2:
+                foreach (GameObject go in selectors_p2)
+                {
+                    // Show only front line
+                    if (go.GetComponent<PlaceSelector>().Col() == 1)
+                        go.SetActive(true);
                 }
                 break;
         }
@@ -237,9 +278,14 @@ public class GameManager : MonoBehaviour
         // Reset position
         selectedCard.gameObject.transform.localPosition = new Vector3(0, 0, 0);
 
+        // Do not allow to select it again
+        selectedCard.PreventSelection();
+
         // Deselect card
         DeselectCard();
-        HideSelectors(currentState);
+        HideSelectors();
+
+        
 
         // TODO: apply effects
     }

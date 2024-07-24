@@ -11,4 +11,14 @@ public class PlaceSelector : MonoBehaviour
     {
         GameManager.Instance.PlaceSelectedCard(transform.parent, row, col);
     }
+
+    public int Row()
+    {
+        return row;
+    }
+
+    public int Col()
+    {
+        return col;
+    }
 }

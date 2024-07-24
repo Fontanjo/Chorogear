@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9be12096c008bba20ae6335140e8b902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardButton: {fileID: 266071897716986555}
   valueText: {fileID: 3885994116784939300}
   nameText: {fileID: 623259152910652922}
   effectText: {fileID: 1698382187110874234}
