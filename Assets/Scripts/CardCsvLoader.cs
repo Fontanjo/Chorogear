@@ -8,15 +8,13 @@ using UnityEngine.Assertions;
 public class CardCsvLoader : MonoBehaviour
 {
     [SerializeField] private TextAsset csvAsset;
-    [SerializeField] private List<Card> cards = new List<Card>();
 
-    public List<Card> Cards { get => cards; private set => cards = value; }
+    private List<Card> Cards = new List<Card>();
     
     public static CardCsvLoader Instance { get; private set; }
 
     void Awake()
     {
-
         // If there is an instance, and it's not me, delete myself.
         if (Instance != null && Instance != this) 
         { 
@@ -26,8 +24,10 @@ public class CardCsvLoader : MonoBehaviour
         { 
             Instance = this; 
         } 
+    }
 
-
+    void LoadCards()
+    {
         string[] Data = csvAsset.text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
         for (int i = 1; i < Data.Length; i++)
         {
@@ -66,5 +66,16 @@ public class CardCsvLoader : MonoBehaviour
                 Debug.LogError($"Could not parse card data: {e}");
             }
         }
+    }
+
+    public List<Card> GetAllCards()
+    {
+        if (Cards != null && Cards.Count > 0)
+        {
+            return Cards;
+        }
+
+        LoadCards();
+        return Cards;
     }
 }

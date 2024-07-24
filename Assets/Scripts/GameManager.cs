@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         currentState = State.PLAYER1;
 
         // Draw cards, update UI, ...
+        InitDecks();
         UpdateUI();
         HideSelectors();
         DeselectCard();
@@ -58,6 +59,11 @@ public class GameManager : MonoBehaviour
     //             break;
     //     }
     // }
+    public void InitDecks()
+    {
+        p1.deck.Init();
+        p2.deck.Init();
+    }
 
     public void UpdateUI()
     {
@@ -152,17 +158,16 @@ public class GameManager : MonoBehaviour
     {
         // Deselect previous card
         DeselectCard();
-
+        
         // Select new card
         selectedCard = card;
-        Debug.Log("New card clicked");
 
         // Highlight/show selected card
         selectedCard.Highlight();
         
-        
         // Show correct selectors
         HideSelectors();
+        HideClickableForEffect();
         switch (selectedCard.cardType)
         {
             case CardManager.CardType.CREATURE:
@@ -172,7 +177,6 @@ public class GameManager : MonoBehaviour
                 ShowPassivSelectors(currentState);
                 break;
             case CardManager.CardType.INSTANTANEOUS:
-                Debug.Log("Instantaneous card");
                 ShowActivableCards(currentState);
                 // TODO: implement
                 break;
@@ -197,6 +201,32 @@ public class GameManager : MonoBehaviour
         foreach (GameObject go in selectors_p2)
         {
             go.SetActive(false);
+        }
+    }
+
+    public void HideClickableForEffect()
+    {
+        for (int i = 0; i < boardP1.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardP1.GetLength(1); j++)
+            {
+                if (boardP1[i, j] != null)
+                {
+                    if (boardP1[i, j] != null)
+                        boardP1[i, j].PreventClickForEffect();
+                }
+            }
+        }
+        for (int i = 0; i < boardP2.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardP2.GetLength(1); j++)
+            {
+                if (boardP2[i, j] != null)
+                {
+                    if (boardP2[i, j] != null)
+                        boardP2[i, j].PreventClickForEffect();
+                }
+            }
         }
     }
 
@@ -270,10 +300,28 @@ public class GameManager : MonoBehaviour
         switch(player)
         {
             case State.PLAYER1:
-                Debug.Log("Activable cards for p1");
+                for (int i = 0; i < boardP1.GetLength(0); i++)
+                {
+                    for (int j = 0; j < boardP1.GetLength(1); j++)
+                    {
+                        if (boardP1[i, j] != null)
+                        {
+                            boardP1[i, j].AllowClickForEffect();
+                        }
+                    }
+                }
                 break;
             case State.PLAYER2:
-                Debug.Log("Activable cards for p2");
+                for (int i = 0; i < boardP2.GetLength(0); i++)
+                {
+                    for (int j = 0; j < boardP2.GetLength(1); j++)
+                    {
+                        if (boardP2[i, j] != null)
+                        {
+                            boardP2[i, j].AllowClickForEffect();
+                        }
+                    }
+                }
                 break;
         }
     }
@@ -318,8 +366,21 @@ public class GameManager : MonoBehaviour
 
         
 
-        // TODO: apply effects
+        // TODO: apply effects if any (or here never?)
     }
+
+    public void MarkForEffect(CardManager cm)
+    {
+        // TODO: Apply effect
+
+        // TODO: Remove/delete card
+        Destroy(selectedCard.gameObject);
+
+        // TODO: Mark card as not clickable for effect anymore
+        Debug.Log("" + cm.cardName + " marked for effect");
+        HideClickableForEffect();
+    }
+
 
     private void Awake() 
     { 

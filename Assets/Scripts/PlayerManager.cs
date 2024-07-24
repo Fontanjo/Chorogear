@@ -12,12 +12,12 @@ public class PlayerManager : MonoBehaviour
     public int hp = 10;
 
     // Start is called before the first frame update
-    void Awake()
+    void Play()
     {
-        Debug.Log("Starting player");
-        // deck = gameObject.AddComponent<Deck>();
-        // TODO: check if deck assigned
-        deck.Init();
+        // Debug.Log("Starting player");
+        // // deck = gameObject.AddComponent<Deck>();
+        // // TODO: check if deck assigned
+        // deck.Init();// Done through GameManager
     }
 
     public SO_Deck Deck()

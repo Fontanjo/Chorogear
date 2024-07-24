@@ -18,6 +18,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     // [SerializeField] private TextMeshProUGUI typeText;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI effectText;
+    [SerializeField] private GameObject effectButton;
 
     public int cardId;
     public int cardValue;
@@ -41,6 +42,8 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         cardEffect = effect;
 
         cardType = type;
+
+        effectButton.SetActive(false);
     }
 
     //Detect if the Cursor starts to pass over the GameObject
@@ -48,7 +51,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         // TODO: make card bigger
         //Output to console the GameObject's name and the following message
-        Debug.Log("Cursor Entering " + cardName + " GameObject");
+        // Debug.Log("Cursor Entering " + cardName + " GameObject");
     }
 
     //Detect when Cursor leaves the GameObject
@@ -56,7 +59,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         // TODO: reset original size
         //Output the following message with the GameObject's name
-        Debug.Log("Cursor Exiting " + cardName + " GameObject");
+        // Debug.Log("Cursor Exiting " + cardName + " GameObject");
     }
 
     public void AddSelfToGameManager()
@@ -84,5 +87,22 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         RectTransform rt = gameObject.GetComponent<RectTransform>();
 
         rt.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+    }
+
+    public void AllowClickForEffect()
+    {
+        effectButton.SetActive(true);
+    }
+
+    public void PreventClickForEffect()
+    {
+        effectButton.SetActive(false);
+    }
+
+
+    public void MarkForEffect()
+    {
+        Debug.Log("Button clicked");
+        GameManager.Instance.MarkForEffect(this);
     }
 }

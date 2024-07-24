@@ -12,18 +12,26 @@ public class SO_Deck : ScriptableObject
 
     private static System.Random rng = new System.Random();
 
-    // Start is called before the first frame update
     public void Init()
     {
         // TODO: do not reinitialize each time if not necessary (or yes? TBD)
         // Generate new deck copying the existing cards (do not take direclty CardLoader list to avoid aliasing)
-        cards = CardCsvLoader.Instance.Cards.ConvertAll(card => new Card(card.id, card.value, card.type, card.name, card.effect));
+        cards = new List<Card>();
+
+        Debug.Log("adding cards");
+        foreach (Card card in CardCsvLoader.Instance.GetAllCards())
+        {
+            Debug.Log(card.id);
+            cards.Add(new Card(card.id, card.value, card.type, card.name, card.effect));
+        }
+        // cards = CardCsvLoader.Instance.Cards.ConvertAll(card => new Card(card.id, card.value, card.type, card.name, card.effect));
     }
 
     /// Shuffle the cards in the deck
     public void Shuffle()
     {
-        cards = cards.OrderBy(_ => rng.Next()).ToList();
+        if (cards != null)
+            cards = cards.OrderBy(_ => rng.Next()).ToList();
     }
 
     public Card PickCard()
