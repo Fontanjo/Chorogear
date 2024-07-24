@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Picked card with value" + c.value);
 
             Transform nc = Instantiate(card_GO.GetComponent<Transform>(), new Vector3(0, 0, 0), Quaternion.identity, newCardsContainer_GO.GetComponent<Transform>());
+            nc.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(77, 110); // 110 forced by horizontal layout
             CardManager cm = nc.gameObject.GetComponent<CardManager>();
             cm.Init(c.value, c.type);
         }
@@ -155,8 +156,10 @@ public class GameManager : MonoBehaviour
         selectedCard = card;
         Debug.Log("New card clicked");
 
+        // TODO: highlight/show selected card
+        // ev. deselect previously selected card
+        
         // TODO: show selectors only if selected card is a "play immediately" and not an "attack"/...
-        // TODO: 
 
         switch (selectedCard.cardType)
         {
@@ -220,7 +223,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Placing selected card! (" + row + "," + col + ")");
         // TODO: check if a card is selected
 
-        // TODO: place selected card as child of the provided parent
+        // Place selected card as child of the provided parent
         selectedCard.gameObject.transform.SetParent(parent);
         RectTransform rt = selectedCard.gameObject.GetComponent<RectTransform>();
         
@@ -228,6 +231,8 @@ public class GameManager : MonoBehaviour
         rt.anchorMin = new Vector2(0.5f, 0.5f);
         rt.anchorMax = new Vector2(0.5f, 0.5f);
         rt.pivot = new Vector2(0.5f, 0.5f);
+
+        rt.sizeDelta = parent.GetComponent<RectTransform>().sizeDelta;
 
         // Reset position
         selectedCard.gameObject.transform.localPosition = new Vector3(0, 0, 0);
