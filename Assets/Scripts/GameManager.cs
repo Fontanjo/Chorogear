@@ -1,58 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public PlayerManager player1, player2;
 
-    public enum State
-    {
-        PLAYER1, PLAYER2, OTHER
-    };
+	public List<Card> deck;
+	public TextMeshProUGUI deckSizeText;
 
-    State currentState;
+	public Transform[] cardSlots;
+	public bool[] availableCardSlots;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Some initialization
-        // TODO: ensure players are selected
+	public List<Card> discardPile;
+	public TextMeshProUGUI discardPileSizeText;
 
-        // Select initial state
-        currentState = State.PLAYER1;
+	private Animator camAnim;
 
-        // TODO: Draw cards, update UI, ...
-    }
+	private void Start()
+	{
+		camAnim = Camera.main.GetComponent<Animator>();
+	}
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        switch(currentState)
-        {
-            case State.PLAYER1:
-                Debug.Log("p1 playing");
-                break;
-            case State.PLAYER2:
-                Debug.Log("p2 playing");
-                break;
-        }
-    }
 
-    // Move the game to the next state
-    public void nextState()
-    {
-        switch(currentState)
-        {
-            case State.PLAYER1:
-                currentState = State.PLAYER2;
-                // TODO: Draw new cards, update UI, ...
-                break;
-            case State.PLAYER2:
-                currentState = State.PLAYER1;
-                // TODO: Draw new cards, update UI, ...
-                break;
-        }
-    }
+	public void Shuffle()
+	{
+		if (discardPile.Count >= 1)
+		{
+			foreach (Card card in discardPile)
+			{
+				deck.Add(card);
+			}
+			discardPile.Clear();
+		}
+	}
+
+	private void Update()
+	{
+		deckSizeText.text = deck.Count.ToString();
+		discardPileSizeText.text = discardPile.Count.ToString();
+	}
+
 }
