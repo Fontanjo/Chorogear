@@ -12,15 +12,27 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     [SerializeField] private TextMeshProUGUI valueText;
+    // [SerializeField] private TextMeshProUGUI typeText;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI effectText;
 
     public int cardValue;
     public CardType cardType;
+    public string cardName;
+    public string cardEffect;
     
-    public void Init(int value, CardType type)
+    public void Init(int value, CardType type, string name = "", string effect = "")
     {
         Debug.Log("Initializing card");
-        valueText.text= "" + value;
+
+        valueText.text = "" + value;
         cardValue = value;
+
+        nameText.text = "" + name;
+        cardName = name;
+
+        effectText.text = "" + effect;
+        cardEffect = effect;
 
         cardType = type;
     }

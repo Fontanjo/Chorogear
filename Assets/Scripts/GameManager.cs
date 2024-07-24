@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
             Transform nc = Instantiate(card_GO.GetComponent<Transform>(), new Vector3(0, 0, 0), Quaternion.identity, newCardsContainer_GO.GetComponent<Transform>());
             nc.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(77, 110); // 110 forced by horizontal layout
             CardManager cm = nc.gameObject.GetComponent<CardManager>();
-            cm.Init(c.value, c.type);
+            cm.Init(c.value, c.type, c.name, c.effect);
         }
     }
 
