@@ -17,32 +17,37 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private TextMeshProUGUI valueText;
     // [SerializeField] private TextMeshProUGUI typeText;
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI effectText;
+    [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private GameObject effectButton;
     [SerializeField] private GameObject targetButton;
 
     public int cardId;
     public int cardValue;
+    public int cardEffectId;
+    public int cardAudioId;
     public CardType cardType;
     public string cardName;
-    public string cardEffect;
+    public string cardDescription;
     
-    public void Init(int id, int value, CardType type, string name = "", string effect = "")
+    public void Init(int id, int value, CardType type, int effect_id, int audio_id, string name, string description)
     {
-        // Debug.Log("Initializing card");
-
         cardId = id;
 
         valueText.text = "" + value;
         cardValue = value;
 
+        cardType = type;
+
+        cardEffectId = effect_id;
+
+        cardAudioId = audio_id;
+
         nameText.text = "" + name;
         cardName = name;
 
-        effectText.text = "" + effect;
-        cardEffect = effect;
+        descriptionText.text = "" + description;
+        cardDescription = description;
 
-        cardType = type;
 
         effectButton.SetActive(false);
         targetButton.SetActive(false);

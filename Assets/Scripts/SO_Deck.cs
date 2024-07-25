@@ -22,7 +22,7 @@ public class SO_Deck : ScriptableObject
         foreach (Card card in CardCsvLoader.Instance.GetAllCards())
         {
             Debug.Log(card.id);
-            cards.Add(new Card(card.id, card.value, card.type, card.name, card.effect));
+            cards.Add(new Card(card.id, card.value, card.type, card.effect_id, card.audio_id, card.name, card.description));
         }
         // cards = CardCsvLoader.Instance.Cards.ConvertAll(card => new Card(card.id, card.value, card.type, card.name, card.effect));
     }
@@ -72,15 +72,19 @@ public class Card
     public int id;
     public int value;
     public CardManager.CardType type;
+    public int effect_id;
+    public int audio_id;
     public string name = "";
-    public string effect = "";
+    public string description = "";
 
-    public Card(int id, int val, CardManager.CardType cardType, string name = "no name", string effect = "no effect")
+    public Card(int id, int val, CardManager.CardType cardType, int effect_id, int audio_id, string name, string description)
     {
         this.id = id;
         this.value = val;
         this.type = cardType;
+        this.effect_id = effect_id;
+        this.audio_id = audio_id;
         this.name = name;
-        this.effect = effect;
+        this.description = description;
     }
 }

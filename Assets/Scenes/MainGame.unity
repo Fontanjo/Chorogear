@@ -1646,7 +1646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00ccc76f996285bca9fe6f9e2524cb23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  csvAsset: {fileID: 4900000, guid: 7c6bbeae98662c374a77d5f4a5316ad4, type: 3}
+  csvAsset: {fileID: 4900000, guid: 6e69ae69eb34ec587891e061fe3516f8, type: 3}
 --- !u!4 &672060039
 Transform:
   m_ObjectHideFlags: 0

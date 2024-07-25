@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
             
             // Set values to prefab
             CardManager cm = nc.gameObject.GetComponent<CardManager>();
-            cm.Init(c.id, c.value, c.type, c.name, c.effect);
+            cm.Init(c.id, c.value, c.type, c.effect_id, c.audio_id, c.name, c.description);
         }
     }
 
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
             CardManager cm = child.gameObject.GetComponent<CardManager>();
 
             // Add card to deck
-            current_player_deck.AddCard(new Card(cm.cardId, cm.cardValue, cm.cardType, cm.cardName, cm.cardEffect));
+            current_player_deck.AddCard(new Card(cm.cardId, cm.cardValue, cm.cardType, cm.cardEffectId, cm.cardAudioId, cm.cardName, cm.cardDescription));
 
             // Mark as object to destroy. Can not destroy directly while iterating
             toDestroy.Add(child.gameObject);
