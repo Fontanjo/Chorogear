@@ -104,7 +104,6 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void MarkForEffect()
     {
-        Debug.Log("Button clicked");
         GameManager.Instance.MarkForEffect(this);
     }
 
@@ -121,7 +120,6 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void MarkForTarget()
     {
-        Debug.Log("Button clicked");
         GameManager.Instance.MarkForTarget(this);
     }
 }

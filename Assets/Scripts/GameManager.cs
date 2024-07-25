@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class GameManager : MonoBehaviour
     public List<GameObject> selectors_p1;
     public List<GameObject> selectors_p2;
 
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI topCentralText;
+
     public enum State
     {
         PLAYER1, PLAYER2
@@ -25,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
+    [Header("For info (do not assign)")]
     // Currently selected card
     public CardManager selectedCard;
 
@@ -40,6 +45,7 @@ public class GameManager : MonoBehaviour
 
         // Draw cards, update UI, ...
         InitDecks();
+        InitUI();
         UpdateUI();
         HideSelectors();
         DeselectCard();
@@ -63,6 +69,12 @@ public class GameManager : MonoBehaviour
     {
         p1.deck.Init();
         p2.deck.Init();
+    }
+
+    public void InitUI()
+    {
+        if (topCentralText != null)
+            topCentralText.text = "Player 1";
     }
 
     public void UpdateUI()
@@ -117,12 +129,17 @@ public class GameManager : MonoBehaviour
                 current_player_deck = p1.deck;
                 // Update state
                 currentState = State.PLAYER2;
+                // Update UI
+                if (topCentralText != null)
+                    topCentralText.text = "Player 2";
                 break;
             case State.PLAYER2:
                 // Set destination deck
                 current_player_deck = p2.deck;
                 // Update state
                 currentState = State.PLAYER1;
+                if (topCentralText != null)
+                    topCentralText.text = "Player 1";
                 break;
         }
 
@@ -244,6 +261,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        p1.PreventClickForTarget();
         for (int i = 0; i < boardP2.GetLength(0); i++)
         {
             for (int j = 0; j < boardP2.GetLength(1); j++)
@@ -255,6 +273,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        p2.PreventClickForTarget();
     }
 
     private void ShowSelectors(State player)
@@ -357,7 +376,6 @@ public class GameManager : MonoBehaviour
     /// Allow to click on cards to mark as target for an effect
     private void ShowActivableCardsTarget(State player)
     {
-        // TODO: allow to target opposite player (and not only its cards)
         switch(player)
         {
             case State.PLAYER2:
@@ -383,6 +401,19 @@ public class GameManager : MonoBehaviour
                         }
                     }
                 }
+                break;
+        }
+    }
+
+    private void ShowActivableOppositePlayerTarget(State currentPlayer)
+    {
+        switch(currentPlayer)
+        {
+            case State.PLAYER2:
+                p1.AllowClickForTarget();
+                break;
+            case State.PLAYER1:
+                p2.AllowClickForTarget();
                 break;
         }
     }
@@ -425,8 +456,6 @@ public class GameManager : MonoBehaviour
         DeselectCard();
         HideSelectors();
 
-        
-
         // TODO: apply effects if any (or here never?)
     }
 
@@ -436,12 +465,16 @@ public class GameManager : MonoBehaviour
 
         // TODO: Only show depending on effect
         ShowActivableCardsTarget(currentState);
+        ShowActivableOppositePlayerTarget(currentState);
+
+        // TODO: Block clicking on next card
 
         // TODO: Remove/delete card
         Destroy(selectedCard.gameObject);
 
-        // TODO: Mark card as not clickable for effect anymore
-        Debug.Log("" + cm.cardName + " marked for effect");
+        // TODO: Pass to next turn if enough cards played
+
+        // Mark cards as not clickable for effect anymore
         HideClickableForEffect();
     }
 
@@ -449,6 +482,13 @@ public class GameManager : MonoBehaviour
     {
         // TODO: Implement
         Debug.Log("Marked for target " + cm.cardName);
+        HideClickableForTarget();
+    }
+
+    public void MarkPlayerForTarget(PlayerManager pm)
+    {
+        // TODO: Implement
+        Debug.Log("Player marked for target " + pm.hp);
         HideClickableForTarget();
     }
 
