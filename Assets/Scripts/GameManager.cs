@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI topCentralText;
+    [SerializeField] private TextMeshProUGUI remainingMovesText;
 
     public enum State
     {
@@ -33,6 +34,9 @@ public class GameManager : MonoBehaviour
     // Currently selected card
     public CardManager selectedCard;
     public CardManager selectedEffectCard;
+
+    public int remainingMoves = 0;
+    private int MAX_MOVES = 3;
 
     // Keep track of cards on the table
     private CardManager[,] boardP1 = new CardManager[3, 2];
@@ -50,6 +54,7 @@ public class GameManager : MonoBehaviour
         DrawCards();
         HideSelectors();
         DeselectCard();
+        ResetRemainingMoves();
     }
 
     public void InitDecks()
@@ -152,6 +157,10 @@ public class GameManager : MonoBehaviour
 
         // Draw new cards, update UI
         DrawCards();
+
+        // Reset max # of moves
+        ResetRemainingMoves();
+
     }
 
     // return current state (p1 or p2 playing)
@@ -160,10 +169,32 @@ public class GameManager : MonoBehaviour
         return currentState;
     }
 
+    public void ResetRemainingMoves()
+    {
+        // Possible to adapt based on player/effects/...
+        remainingMoves = MAX_MOVES;
+        UpdateMovesText();
+    }
+
+    public void DecreaseRemainingMoves()
+    {
+        remainingMoves -= 1;
+        UpdateMovesText();
+    }
+
+    public void UpdateMovesText()
+    {
+        remainingMovesText.text = "" + remainingMoves;
+    }
+
     /// When a card is clicked, keep a reference to it
     /// This facilitates placing it on the board
     public void SetSelectedCard(CardManager card)
     {
+        // TODO: only allow if there are still actions (max 2 cards per turn)
+        if (remainingMoves <= 0)
+            return;
+
         // Deselect previous card
         DeselectCard();
         DeselectEffectCard();
@@ -375,7 +406,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// Allow to click on cards to mark as target for an effect
-    private void ShowActivableCardsTarget(State player, int row = -1)
+    private void ShowActivableCardsTarget(State player, int row = -1, int col = -1)
     {
         Debug.Log("Row " + row);
         switch(player)
@@ -387,6 +418,8 @@ public class GameManager : MonoBehaviour
                         continue;
                     for (int j = 0; j < boardP1.GetLength(1); j++)
                     {
+                        if (col != -1 && col != j) // -1 to select all cols
+                            continue;
                         if (boardP1[i, j] != null)
                         {
                             boardP1[i, j].AllowClickForTarget();
@@ -401,6 +434,8 @@ public class GameManager : MonoBehaviour
                         continue;
                     for (int j = 0; j < boardP2.GetLength(1); j++)
                     {
+                        if (col != -1 && col != j) // -1 to select all cols
+                            continue;
                         if (boardP2[i, j] != null)
                         {
                             boardP2[i, j].AllowClickForTarget();
@@ -466,9 +501,14 @@ public class GameManager : MonoBehaviour
         // Do not allow to select it again
         selectedCard.PreventSelection();
 
+        // Mark as played
+        DecreaseRemainingMoves();
+
         // Deselect card
         DeselectCard();
         HideSelectors();
+
+        // TODO: play sound
 
         // TODO: apply effects if any (or here never?)
     }
@@ -490,11 +530,13 @@ public class GameManager : MonoBehaviour
         switch (selectedCard.cardEffectId) // Effect is on the card used, not on the one just selected on the board
         {
             case 0: // Attack
-                // int currentRow = cm.
+                ShowActivableCardsTarget(currentState, row, -1);
+                ShowActivableOppositePlayerTarget(currentState, row);
+                break;
+            case 1: // Exchange creature with opponent on the same line
+                ShowActivableCardsTarget(currentState, row, 0);
                 break;
         }
-        ShowActivableCardsTarget(currentState, row);
-        ShowActivableOppositePlayerTarget(currentState, row);
 
         // TODO: Block clicking on next card
 
@@ -511,6 +553,9 @@ public class GameManager : MonoBehaviour
         // Remove card from board
         Destroy(selectedCard.gameObject);
 
+        // Mark as played
+        DecreaseRemainingMoves();
+
         // TODO: Pass to next turn if enough cards played
 
         // Mark cards as not clickable for effect anymore
@@ -525,12 +570,19 @@ public class GameManager : MonoBehaviour
         switch (selectedCard.cardEffectId)
         {
             case 0: // Attack
+                Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
                 Vector2 def_pos = CardPositionOnBoard(cm, OppositeState(currentState));
                 // Debug.Log("Attacking card on (" + def_pos.x + "," + def_pos.y + ")");
-                Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, OppositeState(currentState));
                 // TODO: consider modifiers
+                // Apply passiv effect
                 int attack_value = selectedEffectCard.cardValue;
+                attack_value += PassiveEffectOnRowN((int)att_pos[0], currentState);
+                // Assume attack card is a creature, so at col 0
+                if ((int)att_pos[0] == 0)
+                    Debug.LogError("Attacking with a non-creature card");
                 int defense_value = cm.cardValue;
+                if ((int)def_pos[0] == 0)
+                    defense_value += PassiveEffectOnRowN((int)def_pos[1], OppositeState(currentState));
                 // When attacking, if one value > other, destroy weaker card. Else destroy both if even force
                 if (attack_value >= defense_value)
                 {
@@ -561,9 +613,69 @@ public class GameManager : MonoBehaviour
                     Destroy(selectedEffectCard.gameObject);
                 }
                 break;
+                case 1: // Exchange
+                    Debug.Log("Selected for exchange");
+                    break;
         }
 
         // TODO: Implement other effects
+    }
+
+    private int PassiveEffectOnRowN(int row, State player)
+    {
+        Debug.Log("Row " + row);
+        int v = 0;
+
+        CardManager[,] board = boardP1;
+
+        switch (player)
+        {
+            case State.PLAYER1:
+                board = boardP1;
+                break;
+            case State.PLAYER2:
+                board = boardP2;
+                break;
+        }
+
+        // Passiv on same line
+        if (board[row, 1] != null)
+        {
+            switch (board[row, 1].cardEffectId)
+            {
+                case 10: // +1 attack on line
+                    v += 1;
+                    break;
+                case 11: // +2 attack on line, -1 attack on adjecent lines
+                    v += 2;
+                    break;
+            }
+        }
+
+        // Passive line above
+        if (row >= 1 && board[row - 1, 1] != null)
+        {
+            switch (board[row - 1, 1].cardEffectId)
+            {
+                case 11: // +2 attack on line, -1 attack on adjecent lines
+                    v -= 1;
+                    break;
+            }
+        }
+
+        // Passive line below
+        if (row <= 1 && board[row + 1, 1] != null)
+        {
+            switch (board[row + 1, 1].cardEffectId)
+            {
+                case 11: // +2 attack on line, -1 attack on adjecent lines
+                    v -= 1;
+                    break;
+            }
+        }
+
+        Debug.Log("Applying " + v + " effect");
+        return v;
     }
 
     public void MarkPlayerForTarget(PlayerManager pm)
@@ -576,7 +688,10 @@ public class GameManager : MonoBehaviour
         {
             case 0: // Attack
                 Debug.Log("Attacking player");
-                pm.TakeDamage(selectedEffectCard.cardValue);
+                int attack_value = selectedEffectCard.cardValue;
+                Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
+                attack_value += PassiveEffectOnRowN((int)att_pos[0], currentState);
+                pm.TakeDamage(attack_value);
                 break;
         }
         

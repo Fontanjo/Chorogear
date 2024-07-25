@@ -13,12 +13,12 @@ Instantane;Attaque;permet à une creature d'attaquer une fois;0;12;0;9
 Instantane;Attaque;permet à une creature d'attaquer une fois;0;13;0;9
 Instantane;Fortifiant;+2 d'attaque pour une creature ce tour;0;14;-1;10
 Instantane;Pérmutation;Change une creature de ligne;0;15;-1;10
-Instantane;Echange;Echanger une de vos créature avec la creature d'en face;0;16;-1;10
-Passif;Corne de guerre;+1 d'attaque sur la ligne ;0;17;-1;11
-Passif;Corne de guerre;+1 d'attaque sur la ligne.;0;18;-1;11
+Instantane;Echange;Echanger une de vos créature avec la creature d'en face;0;16;1;10
+Passif;Corne de guerre;+1 d'attaque sur la ligne ;0;17;10;11
+Passif;Corne de guerre;+1 d'attaque sur la ligne.;0;18;10;11
 Passif;Diversion;"Si une carte passive doit etre detruite, detruiser diversion a la place";0;19;-1;11
 Passif;Gaz toxique;-1 d'attaque pour les creatures adverses sur cette ligne;0;20;-1;11
 Passif;Armure;+ 4 PV supplementaire;0;21;-1;11
 Passif;Deviation;"Cette carte bloque l'attaque directe, si elle est attaque elle detruit son adversaire.";0;22;-1;11
-Passif;Porte étendare;+2 d'attaque sur la ligne et -1 d'attaque sur les lignes adjacente.;0;23;-1;11
+Passif;Porte étendare;+2 d'attaque sur la ligne et -1 d'attaque sur les lignes adjacente.;0;23;11;11
 Passif;Bouclier;Bloque les attaques contre la creature.;0;24;-1;11
