@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
                 ShowPassivSelectors(currentState);
                 break;
             case CardManager.CardType.INSTANTANEOUS:
-                ShowActivableCardsEffect(currentState);
+                ShowActivableCardsEffect(currentState, 0); // Instantaneous effect can only be applied to creatures ()
                 break;
         }
     }
@@ -339,7 +339,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// Allow to click on cards to apply an effect
-    private void ShowActivableCardsEffect(State player)
+    private void ShowActivableCardsEffect(State player, int col = -1)
     {
         switch(player)
         {
@@ -348,6 +348,8 @@ public class GameManager : MonoBehaviour
                 {
                     for (int j = 0; j < boardP1.GetLength(1); j++)
                     {
+                        if (col != -1 && col != j) // -1 to select all cols
+                            continue;
                         if (boardP1[i, j] != null)
                         {
                             boardP1[i, j].AllowClickForEffect();
@@ -360,6 +362,8 @@ public class GameManager : MonoBehaviour
                 {
                     for (int j = 0; j < boardP2.GetLength(1); j++)
                     {
+                        if (col != -1 && col != j) // -1 to select all cols
+                            continue;
                         if (boardP2[i, j] != null)
                         {
                             boardP2[i, j].AllowClickForEffect();
