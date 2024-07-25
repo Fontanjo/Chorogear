@@ -35,6 +35,7 @@ public class PlayerManager : MonoBehaviour
     public void TakeDamage(int damage)
     {
         hp -= damage;
+        UpdateTexts();
 
         // TODO: check if dead, and if yes act accordingly
     }

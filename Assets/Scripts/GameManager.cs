@@ -509,6 +509,7 @@ public class GameManager : MonoBehaviour
         {
             case 0: // Attack
                 Debug.Log("Attacking player");
+                pm.TakeDamage(selectedEffectCard.cardValue);
                 break;
         }
         
