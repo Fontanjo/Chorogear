@@ -371,13 +371,16 @@ public class GameManager : MonoBehaviour
     }
 
     /// Allow to click on cards to mark as target for an effect
-    private void ShowActivableCardsTarget(State player)
+    private void ShowActivableCardsTarget(State player, int row = -1)
     {
+        Debug.Log("Row " + row);
         switch(player)
         {
             case State.PLAYER2:
                 for (int i = 0; i < boardP1.GetLength(0); i++)
                 {
+                    if (row != -1 && row != i) // -1 to select all rows
+                        continue;
                     for (int j = 0; j < boardP1.GetLength(1); j++)
                     {
                         if (boardP1[i, j] != null)
@@ -390,6 +393,8 @@ public class GameManager : MonoBehaviour
             case State.PLAYER1:
                 for (int i = 0; i < boardP2.GetLength(0); i++)
                 {
+                    if (row != -1 && row != i) // -1 to select all rows
+                        continue;
                     for (int j = 0; j < boardP2.GetLength(1); j++)
                     {
                         if (boardP2[i, j] != null)
@@ -402,15 +407,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ShowActivableOppositePlayerTarget(State currentPlayer)
+    private void ShowActivableOppositePlayerTarget(State currentPlayer, int row = -1)
     {
         switch(currentPlayer)
         {
             case State.PLAYER2:
-                p1.AllowClickForTarget();
+                // Can only attack player if no creature on that line
+                if (boardP1[row, 0] == null)
+                {
+                    p1.AllowClickForTarget();
+                }
                 break;
             case State.PLAYER1:
-                p2.AllowClickForTarget();
+                // Can only attack player if no creature on that line
+                if (boardP2[row, 0] == null)
+                {
+                    p2.AllowClickForTarget();
+                }
                 break;
         }
     }
@@ -464,9 +477,20 @@ public class GameManager : MonoBehaviour
         // Register effect
         selectedEffectCard = cm;
 
+        Vector2 car_pos = CardPositionOnBoard(cm, currentState);
+        int row = (int)car_pos.x;
+        int col = (int)car_pos.y;
+
+
         // TODO: Only show depending on effect
-        ShowActivableCardsTarget(currentState);
-        ShowActivableOppositePlayerTarget(currentState);
+        switch (selectedCard.cardEffectId) // Effect is on the card used, not on the one just selected on the board
+        {
+            case 0: // Attack
+                // int currentRow = cm.
+                break;
+        }
+        ShowActivableCardsTarget(currentState, row);
+        ShowActivableOppositePlayerTarget(currentState, row);
 
         // TODO: Block clicking on next card
 
@@ -497,6 +521,9 @@ public class GameManager : MonoBehaviour
         switch (selectedCard.cardEffectId)
         {
             case 0: // Attack
+                Vector2 def_pos = CardPositionOnBoard(cm, OppositeState(currentState));
+                // Debug.Log("Attacking card on (" + def_pos.x + "," + def_pos.y + ")");
+                Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, OppositeState(currentState));
                 // TODO: consider modifiers
                 int attack_value = selectedEffectCard.cardValue;
                 int defense_value = cm.cardValue;
@@ -532,7 +559,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        // TODO: Apply effect
+        // TODO: Implement other effects
     }
 
     public void MarkPlayerForTarget(PlayerManager pm)
@@ -564,5 +591,60 @@ public class GameManager : MonoBehaviour
         { 
             Instance = this; 
         } 
+    }
+
+    private Vector2 CardPositionOnBoard(CardManager cm, State player)
+    {
+        int x = -1;
+        int y = -1;
+
+
+        switch (player)
+        {
+
+            case State.PLAYER1:
+                for (int i = 0; i < boardP1.GetLength(0); i++)
+                {
+                    for (int j = 0; j < boardP1.GetLength(1); j++)
+                    {
+                        if (boardP1[i, j] == cm)
+                        {
+                            x = i;
+                            y = j;
+                            break;
+                        }
+                    }
+                }
+                break;
+            case State.PLAYER2:
+                for (int i = 0; i < boardP2.GetLength(0); i++)
+                {
+                    for (int j = 0; j < boardP2.GetLength(1); j++)
+                    {
+                        if (boardP2[i, j] == cm)
+                        {
+                            x = i;
+                            y = j;
+                            break;
+                        }
+                    }
+                }
+                break;
+        }
+
+        return new Vector2(x, y);
+    }
+
+    private State OppositeState(State state)
+    {
+        switch (state)
+        {
+            case State.PLAYER1:
+                return State.PLAYER2;
+            case State.PLAYER2:
+                return State.PLAYER1;
+        }
+        // Default return, to make C# happy
+        return State.PLAYER1;
     }
 }
