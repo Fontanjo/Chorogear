@@ -494,6 +494,44 @@ public class GameManager : MonoBehaviour
         Debug.Log("Marked for target " + cm.cardName);
         HideClickableForTarget();
 
+        switch (selectedCard.cardEffectId)
+        {
+            case 0: // Attack
+                // TODO: consider modifiers
+                int attack_value = selectedEffectCard.cardValue;
+                int defense_value = cm.cardValue;
+                // When attacking, if one value > other, destroy weaker card. Else destroy both if even force
+                if (attack_value >= defense_value)
+                {
+                    // Destroy defense (target) card
+                    switch(currentState)
+                    {
+                        case State.PLAYER1:
+                            p2.deck.AddCard(cm.ToCardObject());
+                            break;
+                        case State.PLAYER2:
+                            p1.deck.AddCard(cm.ToCardObject());
+                            break;
+                    }
+                    Destroy(cm.gameObject);
+                }
+                if (defense_value >= attack_value)
+                {
+                    // Destroy attack (own) card
+                    switch(currentState)
+                    {
+                        case State.PLAYER1:
+                            p2.deck.AddCard(selectedEffectCard.ToCardObject());
+                            break;
+                        case State.PLAYER2:
+                            p1.deck.AddCard(selectedEffectCard.ToCardObject());
+                            break;
+                    }
+                    Destroy(selectedEffectCard.gameObject);
+                }
+                break;
+        }
+
         // TODO: Apply effect
     }
 
@@ -502,8 +540,6 @@ public class GameManager : MonoBehaviour
         // Debug.Log("Player marked for target " + pm.hp);
         HideClickableForTarget();
 
-        Debug.Log(selectedCard.cardEffectId);
-        Debug.Log(selectedCard.cardName);
         // The effect is on the card that is being played, not on the one on the table
         switch (selectedCard.cardEffectId)
         {
