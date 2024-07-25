@@ -579,11 +579,11 @@ public class GameManager : MonoBehaviour
                 int attack_value = selectedEffectCard.cardValue;
                 attack_value += PassiveEffectOnRowN((int)att_pos[0], currentState);
                 // Assume attack card is a creature, so at col 0
-                if ((int)att_pos[0] == 0)
+                if ((int)att_pos[1] == 1)
                     Debug.LogError("Attacking with a non-creature card");
                 int defense_value = cm.cardValue;
-                if ((int)def_pos[0] == 0)
-                    defense_value += PassiveEffectOnRowN((int)def_pos[1], OppositeState(currentState));
+                if ((int)def_pos[1] == 0)
+                    defense_value += PassiveEffectOnRowN((int)def_pos[0], OppositeState(currentState));
                 // When attacking, if one value > other, destroy weaker card. Else destroy both if even force
                 if (attack_value >= defense_value)
                 {
