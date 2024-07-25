@@ -19,6 +19,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI effectText;
     [SerializeField] private GameObject effectButton;
+    [SerializeField] private GameObject targetButton;
 
     public int cardId;
     public int cardValue;
@@ -28,7 +29,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     
     public void Init(int id, int value, CardType type, string name = "", string effect = "")
     {
-        Debug.Log("Initializing card");
+        // Debug.Log("Initializing card");
 
         cardId = id;
 
@@ -44,6 +45,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         cardType = type;
 
         effectButton.SetActive(false);
+        targetButton.SetActive(false);
     }
 
     //Detect if the Cursor starts to pass over the GameObject
@@ -104,5 +106,22 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         Debug.Log("Button clicked");
         GameManager.Instance.MarkForEffect(this);
+    }
+
+    public void AllowClickForTarget()
+    {
+        targetButton.SetActive(true);
+    }
+
+    public void PreventClickForTarget()
+    {
+        targetButton.SetActive(false);
+    }
+
+
+    public void MarkForTarget()
+    {
+        Debug.Log("Button clicked");
+        GameManager.Instance.MarkForTarget(this);
     }
 }

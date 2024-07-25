@@ -168,6 +168,7 @@ public class GameManager : MonoBehaviour
         // Show correct selectors
         HideSelectors();
         HideClickableForEffect();
+        HideClickableForTarget();
         switch (selectedCard.cardType)
         {
             case CardManager.CardType.CREATURE:
@@ -177,7 +178,7 @@ public class GameManager : MonoBehaviour
                 ShowPassivSelectors(currentState);
                 break;
             case CardManager.CardType.INSTANTANEOUS:
-                ShowActivableCards(currentState);
+                ShowActivableCardsEffect(currentState);
                 // TODO: implement
                 break;
         }
@@ -225,6 +226,32 @@ public class GameManager : MonoBehaviour
                 {
                     if (boardP2[i, j] != null)
                         boardP2[i, j].PreventClickForEffect();
+                }
+            }
+        }
+    }
+
+    public void HideClickableForTarget()
+    {
+        for (int i = 0; i < boardP1.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardP1.GetLength(1); j++)
+            {
+                if (boardP1[i, j] != null)
+                {
+                    if (boardP1[i, j] != null)
+                        boardP1[i, j].PreventClickForTarget();
+                }
+            }
+        }
+        for (int i = 0; i < boardP2.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardP2.GetLength(1); j++)
+            {
+                if (boardP2[i, j] != null)
+                {
+                    if (boardP2[i, j] != null)
+                        boardP2[i, j].PreventClickForTarget();
                 }
             }
         }
@@ -295,7 +322,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ShowActivableCards(State player)
+    /// Allow to click on cards to apply an effect
+    private void ShowActivableCardsEffect(State player)
     {
         switch(player)
         {
@@ -319,6 +347,39 @@ public class GameManager : MonoBehaviour
                         if (boardP2[i, j] != null)
                         {
                             boardP2[i, j].AllowClickForEffect();
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    /// Allow to click on cards to mark as target for an effect
+    private void ShowActivableCardsTarget(State player)
+    {
+        // TODO: allow to target opposite player (and not only its cards)
+        switch(player)
+        {
+            case State.PLAYER2:
+                for (int i = 0; i < boardP1.GetLength(0); i++)
+                {
+                    for (int j = 0; j < boardP1.GetLength(1); j++)
+                    {
+                        if (boardP1[i, j] != null)
+                        {
+                            boardP1[i, j].AllowClickForTarget();
+                        }
+                    }
+                }
+                break;
+            case State.PLAYER1:
+                for (int i = 0; i < boardP2.GetLength(0); i++)
+                {
+                    for (int j = 0; j < boardP2.GetLength(1); j++)
+                    {
+                        if (boardP2[i, j] != null)
+                        {
+                            boardP2[i, j].AllowClickForTarget();
                         }
                     }
                 }
@@ -373,12 +434,22 @@ public class GameManager : MonoBehaviour
     {
         // TODO: Apply effect
 
+        // TODO: Only show depending on effect
+        ShowActivableCardsTarget(currentState);
+
         // TODO: Remove/delete card
         Destroy(selectedCard.gameObject);
 
         // TODO: Mark card as not clickable for effect anymore
         Debug.Log("" + cm.cardName + " marked for effect");
         HideClickableForEffect();
+    }
+
+    public void MarkForTarget(CardManager cm)
+    {
+        // TODO: Implement
+        Debug.Log("Marked for target " + cm.cardName);
+        HideClickableForTarget();
     }
 
 
