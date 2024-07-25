@@ -18,10 +18,8 @@ public class SO_Deck : ScriptableObject
         // Generate new deck copying the existing cards (do not take direclty CardLoader list to avoid aliasing)
         cards = new List<Card>();
 
-        Debug.Log("adding cards");
         foreach (Card card in CardCsvLoader.Instance.GetAllCards())
         {
-            Debug.Log(card.id);
             cards.Add(new Card(card.id, card.value, card.type, card.effect_id, card.audio_id, card.name, card.description));
         }
         // cards = CardCsvLoader.Instance.Cards.ConvertAll(card => new Card(card.id, card.value, card.type, card.name, card.effect));

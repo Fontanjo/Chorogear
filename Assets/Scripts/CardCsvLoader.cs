@@ -35,6 +35,7 @@ public class CardCsvLoader : MonoBehaviour
             if (splitData.Length != 7)
             {
                 Debug.LogError($"Wrong line, len == {splitData.Length}");
+                Debug.Log(Data[i]);
             }
 
             try

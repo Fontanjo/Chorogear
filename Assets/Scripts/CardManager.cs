@@ -28,7 +28,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public CardType cardType;
     public string cardName;
     public string cardDescription;
-    
+
     public void Init(int id, int value, CardType type, int effect_id, int audio_id, string name, string description)
     {
         cardId = id;
@@ -126,5 +126,10 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void MarkForTarget()
     {
         GameManager.Instance.MarkForTarget(this);
+    }
+
+    public Card ToCardObject()
+    {
+        return new Card(this.cardId, this.cardValue, this.cardType, this.cardEffectId, this.cardAudioId, this.cardName, this.cardDescription);
     }
 }

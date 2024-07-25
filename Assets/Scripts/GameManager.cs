@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [Header("For info (do not assign)")]
     // Currently selected card
     public CardManager selectedCard;
+    public CardManager selectedEffectCard;
 
     // Keep track of cards on the table
     private CardManager[,] boardP1 = new CardManager[3, 2];
@@ -43,28 +44,14 @@ public class GameManager : MonoBehaviour
         // Select initial state
         currentState = State.PLAYER1;
 
-        // Draw cards, update UI, ...
+        // Initializations (draw cards, update UI, ...)
         InitDecks();
         InitUI();
-        UpdateUI();
+        DrawCards();
         HideSelectors();
         DeselectCard();
     }
 
-
-    // // Update is called once per frame
-    // void Update()
-    // {
-    //     switch(currentState)
-    //     {
-    //         case State.PLAYER1:
-    //             // Debug.Log("p1 playing");
-    //             break;
-    //         case State.PLAYER2:
-    //             // Debug.Log("p2 playing");
-    //             break;
-    //     }
-    // }
     public void InitDecks()
     {
         p1.deck.Init();
@@ -77,7 +64,7 @@ public class GameManager : MonoBehaviour
             topCentralText.text = "Player 1";
     }
 
-    public void UpdateUI()
+    public void DrawCards()
     {
         // Initialize with p1 values
         SO_Deck deck = p1.Deck();
@@ -113,6 +100,10 @@ public class GameManager : MonoBehaviour
             CardManager cm = nc.gameObject.GetComponent<CardManager>();
             cm.Init(c.id, c.value, c.type, c.effect_id, c.audio_id, c.name, c.description);
         }
+
+        // Deselect all
+        DeselectCard();
+        DeselectEffectCard();
     }
 
     // Move the game to the next state
@@ -159,8 +150,8 @@ public class GameManager : MonoBehaviour
         // Destroy all children
         toDestroy.ForEach(c => Object.Destroy(c.gameObject));
 
-        // Pick and draw new cards, update UI, ...
-        UpdateUI();
+        // Draw new cards, update UI
+        DrawCards();
     }
 
     // return current state (p1 or p2 playing)
@@ -175,6 +166,7 @@ public class GameManager : MonoBehaviour
     {
         // Deselect previous card
         DeselectCard();
+        DeselectEffectCard();
         
         // Select new card
         selectedCard = card;
@@ -196,7 +188,6 @@ public class GameManager : MonoBehaviour
                 break;
             case CardManager.CardType.INSTANTANEOUS:
                 ShowActivableCardsEffect(currentState);
-                // TODO: implement
                 break;
         }
     }
@@ -208,6 +199,12 @@ public class GameManager : MonoBehaviour
             selectedCard.DeHighlight();
     
         selectedCard = null;
+    }
+
+    // Remove selected card
+    public void DeselectEffectCard()
+    {
+        selectedEffectCard = null;
     }
 
     private void HideSelectors()
@@ -461,7 +458,11 @@ public class GameManager : MonoBehaviour
 
     public void MarkForEffect(CardManager cm)
     {
-        // TODO: Apply effect
+        // Possibly deselect previously selected effect
+        DeselectEffectCard();
+
+        // Register effect
+        selectedEffectCard = cm;
 
         // TODO: Only show depending on effect
         ShowActivableCardsTarget(currentState);
@@ -469,7 +470,17 @@ public class GameManager : MonoBehaviour
 
         // TODO: Block clicking on next card
 
-        // TODO: Remove/delete card
+        // Put it back in the deck
+        switch(currentState)
+        {
+            case State.PLAYER1:
+                p1.deck.AddCard(selectedCard.ToCardObject());
+                break;
+            case State.PLAYER2:
+                p2.deck.AddCard(selectedCard.ToCardObject());
+                break;
+        }
+        // Remove card from board
         Destroy(selectedCard.gameObject);
 
         // TODO: Pass to next turn if enough cards played
@@ -480,16 +491,28 @@ public class GameManager : MonoBehaviour
 
     public void MarkForTarget(CardManager cm)
     {
-        // TODO: Implement
         Debug.Log("Marked for target " + cm.cardName);
         HideClickableForTarget();
+
+        // TODO: Apply effect
     }
 
     public void MarkPlayerForTarget(PlayerManager pm)
     {
-        // TODO: Implement
-        Debug.Log("Player marked for target " + pm.hp);
+        // Debug.Log("Player marked for target " + pm.hp);
         HideClickableForTarget();
+
+        Debug.Log(selectedCard.cardEffectId);
+        Debug.Log(selectedCard.cardName);
+        // The effect is on the card that is being played, not on the one on the table
+        switch (selectedCard.cardEffectId)
+        {
+            case 0: // Attack
+                Debug.Log("Attacking player");
+                break;
+        }
+        
+        // TODO: Apply effect
     }
 
 
