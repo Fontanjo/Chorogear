@@ -627,14 +627,17 @@ public class GameManager : MonoBehaviour
         int v = 0;
 
         CardManager[,] board = boardP1;
+        CardManager[,] opponentBoard = boardP2;
 
         switch (player)
         {
             case State.PLAYER1:
                 board = boardP1;
+                opponentBoard = boardP2;
                 break;
             case State.PLAYER2:
                 board = boardP2;
+                opponentBoard = boardP1;
                 break;
         }
 
@@ -669,6 +672,17 @@ public class GameManager : MonoBehaviour
             switch (board[row + 1, 1].cardEffectId)
             {
                 case 11: // +2 attack on line, -1 attack on adjecent lines
+                    v -= 1;
+                    break;
+            }
+        }
+
+        // Opponent, same line
+        if (opponentBoard[row, 1] != null)
+        {
+            switch (opponentBoard[row, 1].cardEffectId)
+            {
+                case 12: // -1 attack for opponent on line
                     v -= 1;
                     break;
             }
