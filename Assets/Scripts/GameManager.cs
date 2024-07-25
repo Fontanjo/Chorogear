@@ -567,11 +567,12 @@ public class GameManager : MonoBehaviour
         Debug.Log("Marked for target " + cm.cardName);
         HideClickableForTarget();
 
+        Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
+        Vector2 def_pos = CardPositionOnBoard(cm, OppositeState(currentState));
+
         switch (selectedCard.cardEffectId)
         {
             case 0: // Attack
-                Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
-                Vector2 def_pos = CardPositionOnBoard(cm, OppositeState(currentState));
                 // Debug.Log("Attacking card on (" + def_pos.x + "," + def_pos.y + ")");
                 // TODO: consider modifiers
                 // Apply passiv effect
@@ -615,6 +616,26 @@ public class GameManager : MonoBehaviour
                 break;
                 case 1: // Exchange
                     Debug.Log("Selected for exchange");
+                    // Exchange on boardP1
+                    switch(currentState)
+                    {
+                        case State.PLAYER1:
+                            boardP2[(int)def_pos[0], (int)def_pos[1]] = boardP1[(int)att_pos[0], (int)att_pos[1]];
+                            boardP1[(int)att_pos[0], (int)att_pos[1]] = cm;
+                            break;
+                        case State.PLAYER2:
+                            boardP1[(int)def_pos[0], (int)def_pos[1]] = boardP2[(int)att_pos[0], (int)att_pos[1]];
+                            boardP2[(int)att_pos[0], (int)att_pos[1]] = cm;
+                            break;
+                    }
+                    // TODO: exchange on UI
+                    Transform tempParent = selectedEffectCard.transform.parent;
+                    selectedEffectCard.transform.SetParent(cm.transform.parent);
+                    selectedEffectCard.transform.localPosition = new Vector3(0, 0, 0);
+
+                    cm.transform.SetParent(tempParent);
+                    cm.transform.localPosition = new Vector3(0, 0, 0);
+
                     break;
         }
 
