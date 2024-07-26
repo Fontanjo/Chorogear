@@ -579,6 +579,7 @@ public class GameManager : MonoBehaviour
         Vector2 def_pos = CardPositionOnBoard(cm, OppositeState(currentState));
 
         bool effectImplemented = true;
+        bool ownCardSurvived = true;
 
         switch (selectedCard.cardEffectId)
         {
@@ -611,6 +612,9 @@ public class GameManager : MonoBehaviour
                 }
                 if (defense_value >= attack_value)
                 {
+                    // Record card destruction, do not apply later effects
+                    ownCardSurvived = false;
+
                     // Destroy attack (own) card
                     switch(currentState)
                     {
@@ -651,6 +655,23 @@ public class GameManager : MonoBehaviour
                     break;
         }
 
+        // Card effects that are applied after the turn
+        // Apply only if card survived
+        if (ownCardSurvived)
+        {
+            switch (selectedCard.cardEffectId)
+            {
+                case 0: // Attack
+                    if (selectedEffectCard.cardEffectId == 20) // +1 after attack
+                    {
+                        selectedEffectCard.IncrementValue(1);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         // Play sound
         if (effectImplemented)
         {
@@ -675,6 +696,21 @@ public class GameManager : MonoBehaviour
                 Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
                 attack_value += PassiveEffectOnRowN((int)att_pos[0], currentState);
                 pm.TakeDamage(attack_value);
+                break;
+            default:
+                break;
+        }
+
+        // Card effects that are applied after the turn
+        switch (selectedCard.cardEffectId)
+        {
+            case 0: // Attack
+                if (selectedEffectCard.cardEffectId == 20) // +1 after attack
+                {
+                    selectedEffectCard.IncrementValue(1);
+                }
+                break;
+            default:
                 break;
         }
 

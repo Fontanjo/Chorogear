@@ -31,13 +31,13 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public string cardName;
     public string cardDescription;
 
-    public void Init(int id, int value, CardType type, int effect_id, int audio_id, string name, string description)
+    public void Init(int id, int val, CardType type, int effect_id, int audio_id, string name, string description)
     {
         cardId = id;
         backgroundImage.overrideSprite = CardImagesManager.Instance.GetCardImage(id);
 
-        valueText.text = "" + value;
-        cardValue = value;
+        cardValue = val;
+        valueText.text = "" + cardValue;
 
         cardType = type;
 
@@ -45,14 +45,20 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         cardAudioId = audio_id;
 
-        nameText.text = "" + name;
         cardName = name;
+        nameText.text = "" + cardName;
 
-        descriptionText.text = "" + description;
         cardDescription = description;
+        descriptionText.text = "" + cardDescription;
 
         effectButton.SetActive(false);
         targetButton.SetActive(false);
+    }
+
+    public void IncrementValue(int val = 1)
+    {
+        cardValue += val;
+        valueText.text = "" + cardValue;
     }
 
     //Detect if the Cursor starts to pass over the GameObject
