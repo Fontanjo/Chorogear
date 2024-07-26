@@ -5765,7 +5765,8 @@ MonoBehaviour:
   id_06: {fileID: 8300000, guid: 066007327a22ccea8b0d94e2c655fed1, type: 3}
   id_07: {fileID: 8300000, guid: 618e89ebb38095dfcb0ce851dfa98b33, type: 3}
   id_08: {fileID: 8300000, guid: 4cc191a4c6dd43f769f7adc12c1624be, type: 3}
-  id_11: {fileID: 0}
+  id_09: {fileID: 8300000, guid: 16cfdbbfce2938296bf53fe7aa707592, type: 3}
+  id_11: {fileID: 8300000, guid: 1da69ee6d8c909f999c10deaddb90b91, type: 3}
 --- !u!4 &1144322985
 Transform:
   m_ObjectHideFlags: 0

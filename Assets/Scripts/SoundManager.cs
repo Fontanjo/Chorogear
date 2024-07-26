@@ -20,10 +20,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip id_07;
     [SerializeField] private AudioClip id_08;
 
+    [Header("Audio clip for instantaneous cards")]
+    [SerializeField] private AudioClip id_09;
+
     [Header("Audio clip for passiv cards")]
     [SerializeField] private AudioClip id_11;
     
-    // [Header("Audio clip for instantaneous cards")]
 
     public void PlayAudioById(int audioID)
     {
@@ -55,6 +57,9 @@ public class SoundManager : MonoBehaviour
                 source.PlayOneShot(id_08, 1.0f);
                 break;
             // ########### INSTANTANEOUS ###########
+            case 9:
+                source.PlayOneShot(id_09, 1.0f);
+                break;
             // ########### PASSIV ###########
             case 11:
                 source.PlayOneShot(id_11, 1.0f);

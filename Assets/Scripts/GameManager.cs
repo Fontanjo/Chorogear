@@ -558,6 +558,8 @@ public class GameManager : MonoBehaviour
                 p2.deck.AddCard(selectedCard.ToCardObject());
                 break;
         }
+
+        // TODO: play animation, e.g. shaking before removing
         // Remove card from board
         Destroy(selectedCard.gameObject);
 
@@ -575,6 +577,8 @@ public class GameManager : MonoBehaviour
 
         Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
         Vector2 def_pos = CardPositionOnBoard(cm, OppositeState(currentState));
+
+        bool effectImplemented = true;
 
         switch (selectedCard.cardEffectId)
         {
@@ -641,11 +645,44 @@ public class GameManager : MonoBehaviour
 
                     cm.transform.SetParent(tempParent);
                     cm.transform.localPosition = new Vector3(0, 0, 0);
-
+                    break;
+                default:
+                    effectImplemented = false;
                     break;
         }
 
+        // Play sound
+        if (effectImplemented)
+        {
+            int id = selectedCard.cardAudioId;
+            SoundManager.Instance.PlayAudioById(id);
+        }
+
         // TODO: Implement other effects
+    }
+
+    public void MarkPlayerForTarget(PlayerManager pm)
+    {
+        // Debug.Log("Player marked for target " + pm.hp);
+        HideClickableForTarget();
+
+        // The effect is on the card that is being played, not on the one on the table
+        switch (selectedCard.cardEffectId)
+        {
+            case 0: // Attack
+                Debug.Log("Attacking player");
+                int attack_value = selectedEffectCard.cardValue;
+                Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
+                attack_value += PassiveEffectOnRowN((int)att_pos[0], currentState);
+                pm.TakeDamage(attack_value);
+                break;
+        }
+
+        // Play sound
+        int id = selectedCard.cardAudioId;
+        SoundManager.Instance.PlayAudioById(id);
+
+        // TODO: Apply effect
     }
 
     private int PassiveEffectOnRowN(int row, State player)
@@ -717,26 +754,6 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Applying " + v + " effect");
         return v;
-    }
-
-    public void MarkPlayerForTarget(PlayerManager pm)
-    {
-        // Debug.Log("Player marked for target " + pm.hp);
-        HideClickableForTarget();
-
-        // The effect is on the card that is being played, not on the one on the table
-        switch (selectedCard.cardEffectId)
-        {
-            case 0: // Attack
-                Debug.Log("Attacking player");
-                int attack_value = selectedEffectCard.cardValue;
-                Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
-                attack_value += PassiveEffectOnRowN((int)att_pos[0], currentState);
-                pm.TakeDamage(attack_value);
-                break;
-        }
-        
-        // TODO: Apply effect
     }
 
 
