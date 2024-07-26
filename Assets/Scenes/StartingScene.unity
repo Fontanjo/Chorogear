@@ -556,6 +556,50 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2732209141634260186, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2751909821943269926, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 2751909821943269926, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2751909821943269926, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280003986136463829, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280003986136463829, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280003986136463829, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4618020096893827514, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 4618020096893827514, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192282343633635585, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192282343633635585, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7800129457478917406, guid: c075d04f13aa21e499f854afe1a9a954, type: 3}
       propertyPath: m_Pivot.x
       value: 0
