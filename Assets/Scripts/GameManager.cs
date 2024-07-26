@@ -39,6 +39,13 @@ public class GameManager : MonoBehaviour
     public int remainingMoves = 0;
     private int MAX_MOVES = 3;
 
+    // Utilities
+    private int ROW = 0;
+    private int COL = 1;
+
+    private int CREATURE_COL = 0;
+    private int PASSIV_COL = 1;
+
     // Keep track of cards on the table
     private CardManager[,] boardP1 = new CardManager[3, 2];
     private CardManager[,] boardP2 = new CardManager[3, 2];
@@ -518,7 +525,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Sound manager not initialize, make sure to start the game from menu scene");
+            Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene");
         }
         
         // Deselect card
@@ -595,13 +602,13 @@ public class GameManager : MonoBehaviour
                 // TODO: consider modifiers
                 // Apply passiv effect
                 int attack_value = selectedEffectCard.cardValue;
-                attack_value += PassiveEffectOnRowN((int)att_pos[0], currentState);
+                attack_value += PassiveEffectOnRowN((int)att_pos[ROW], currentState);
                 // Assume attack card is a creature, so at col 0
-                if ((int)att_pos[1] == 1)
+                if ((int)att_pos[COL] != CREATURE_COL)
                     Debug.LogError("Attacking with a non-creature card");
                 int defense_value = cm.cardValue;
-                if ((int)def_pos[1] == 0)
-                    defense_value += PassiveEffectOnRowN((int)def_pos[0], OppositeState(currentState));
+                if ((int)def_pos[COL] == CREATURE_COL)
+                    defense_value += PassiveEffectOnRowN((int)def_pos[ROW], OppositeState(currentState));
                 // When attacking, if one value > other, destroy weaker card. Else destroy both if even force
                 if (attack_value >= defense_value)
                 {
@@ -641,12 +648,12 @@ public class GameManager : MonoBehaviour
                     switch(currentState)
                     {
                         case State.PLAYER1:
-                            boardP2[(int)def_pos[0], (int)def_pos[1]] = boardP1[(int)att_pos[0], (int)att_pos[1]];
-                            boardP1[(int)att_pos[0], (int)att_pos[1]] = cm;
+                            boardP2[(int)def_pos[ROW], (int)def_pos[COL]] = boardP1[(int)att_pos[ROW], (int)att_pos[COL]];
+                            boardP1[(int)att_pos[ROW], (int)att_pos[COL]] = cm;
                             break;
                         case State.PLAYER2:
-                            boardP1[(int)def_pos[0], (int)def_pos[1]] = boardP2[(int)att_pos[0], (int)att_pos[1]];
-                            boardP2[(int)att_pos[0], (int)att_pos[1]] = cm;
+                            boardP1[(int)def_pos[ROW], (int)def_pos[COL]] = boardP2[(int)att_pos[ROW], (int)att_pos[COL]];
+                            boardP2[(int)att_pos[ROW], (int)att_pos[COL]] = cm;
                             break;
                     }
                     // TODO: exchange on UI
@@ -689,7 +696,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Sound manager not initialize, make sure to start the game from menu scene"); 
+                Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene"); 
             }
         }
 
@@ -701,14 +708,20 @@ public class GameManager : MonoBehaviour
         // Debug.Log("Player marked for target " + pm.hp);
         HideClickableForTarget();
 
+        // Get attacker position
+        Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
+
+        CardManager[,] opponentBoard = ownBoard(OppositeState(currentState));
+
         // The effect is on the card that is being played, not on the one on the table
         switch (selectedCard.cardEffectId)
         {
             case 0: // Attack
                 Debug.Log("Attacking player");
+                // if ()
+                // TODO: check if there is a deviation card
                 int attack_value = selectedEffectCard.cardValue;
-                Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
-                attack_value += PassiveEffectOnRowN((int)att_pos[0], currentState);
+                attack_value += PassiveEffectOnRowN((int)att_pos[ROW], currentState);
                 pm.TakeDamage(attack_value);
                 break;
             default:
@@ -736,10 +749,23 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Sound manager not initialize, make sure to start the game from menu scene");
+            Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene");
         }
 
         // TODO: Apply effect
+    }
+
+    private CardManager[,] ownBoard(State player)
+    {
+        switch (player)
+        {
+            case State.PLAYER1:
+                return boardP1;
+            case State.PLAYER2:
+                return boardP2;
+            default:
+                return boardP1;
+        }
     }
 
     private int PassiveEffectOnRowN(int row, State player)
@@ -747,20 +773,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Row " + row);
         int v = 0;
 
-        CardManager[,] board = boardP1;
-        CardManager[,] opponentBoard = boardP2;
-
-        switch (player)
-        {
-            case State.PLAYER1:
-                board = boardP1;
-                opponentBoard = boardP2;
-                break;
-            case State.PLAYER2:
-                board = boardP2;
-                opponentBoard = boardP1;
-                break;
-        }
+        CardManager[,] board = ownBoard(player);
+        CardManager[,] opponentBoard = ownBoard(OppositeState(player));
 
         // Passiv on same line
         if (board[row, 1] != null)

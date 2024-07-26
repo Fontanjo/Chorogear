@@ -28,7 +28,7 @@ public class StartMusic : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Sound manager not initialize, make sure to start the game from menu scene");
+            Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene");
         }
     }
 }
