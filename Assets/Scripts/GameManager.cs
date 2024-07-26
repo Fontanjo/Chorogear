@@ -534,6 +534,20 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
+        // Check if card has a direct effect
+        if (selectedCard.cardEffectId == 16) // Armor
+        {
+            switch (currentState)
+            {
+                case State.PLAYER1:
+                    p1.IncreaseHealth(4);
+                    break;
+                case State.PLAYER2:
+                    p2.IncreaseHealth(4);
+                    break;
+            }
+        }
+
         // Place selected card as child of the provided parent
         selectedCard.gameObject.transform.SetParent(parent);
         RectTransform rt = selectedCard.gameObject.GetComponent<RectTransform>();
@@ -696,12 +710,12 @@ public class GameManager : MonoBehaviour
                         }
                     }
 
-                    if (is_creature && has_shield)
+                    if (is_creature && has_shield) // Shield
                     {
                         // Don't do anything
                         Debug.Log("Shield has protected creature");
                     }
-                    else if (is_passiv && row_diversion != -1)
+                    else if (is_passiv && row_diversion != -1) // Diversion
                     {
                         // Destroy diversion instead (might as well be the target)
                         CardManager diversion_card = opponentBoard[row_diversion, PASSIV_COL];
@@ -710,6 +724,19 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
+                        // Check if it is an armor. If so, remove 4 from player
+                        if (cm.cardEffectId == 16) // Armor
+                        {
+                            switch (currentState)
+                            {
+                                case State.PLAYER1:
+                                    p2.TakeDamage(4);
+                                    break;
+                                case State.PLAYER2:
+                                    p1.TakeDamage(4);
+                                    break;
+                            }
+                        }
                         // Destroy defense (target) card
                         ownDeck(OppositeState(currentState)).AddCard(cm.ToCardObject());
                         Destroy(cm.gameObject);

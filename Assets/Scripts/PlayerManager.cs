@@ -36,8 +36,12 @@ public class PlayerManager : MonoBehaviour
     {
         hp -= damage;
         UpdateTexts();
+    }
 
-        // TODO: check if dead, and if yes act accordingly
+    public void IncreaseHealth(int points)
+    {
+        hp += points;
+        UpdateTexts();
     }
 
     private void UpdateTexts()
