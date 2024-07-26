@@ -603,11 +603,15 @@ public class GameManager : MonoBehaviour
                 // When attacking, if one value > other, destroy weaker card. Else destroy both if even force
                 if (attack_value >= defense_value)
                 {
-                    CardManager[,] opponentBoard = ownBoard(OppositeState(currentState));
+                    CardManager[,] opponentBoard = OwnBoard(OppositeState(currentState));
+                    // CardManager[,] ownBoard = OwnBoard(currentState);
 
                     // Check if there is a diversion card (effect 14)
                     bool is_passiv = cm.cardType == CardManager.CardType.PASSIV;
+                    bool is_creature = cm.cardType == CardManager.CardType.CREATURE;
+
                     int row_diversion = -1;
+                    bool has_shield = opponentBoard[(int)def_pos[ROW], PASSIV_COL] != null && opponentBoard[(int)def_pos[ROW], PASSIV_COL].cardEffectId == 15;
                     for (int i = 0; i < opponentBoard.GetLength(0); i++)
                     {
                         if (opponentBoard[i, PASSIV_COL] != null && opponentBoard[i, PASSIV_COL].cardEffectId == 14)
@@ -617,7 +621,12 @@ public class GameManager : MonoBehaviour
                         }
                     }
 
-                    if (is_passiv && row_diversion != -1)
+                    if (is_creature && has_shield)
+                    {
+                        // Don't do anything
+                        Debug.Log("Shield has protected creature");
+                    }
+                    else if (is_passiv && row_diversion != -1)
                     {
                         // Destroy diversion instead (might as well be the target)
                         CardManager diversion_card = opponentBoard[row_diversion, PASSIV_COL];
@@ -718,7 +727,7 @@ public class GameManager : MonoBehaviour
         // Get attacker position
         Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
 
-        CardManager[,] opponentBoard = ownBoard(OppositeState(currentState));
+        CardManager[,] opponentBoard = OwnBoard(OppositeState(currentState));
 
         // The effect is on the card that is being played, not on the one on the table
         switch (selectedCard.cardEffectId)
@@ -777,8 +786,8 @@ public class GameManager : MonoBehaviour
     {
         int v = 0;
 
-        CardManager[,] board = ownBoard(player);
-        CardManager[,] opponentBoard = ownBoard(OppositeState(player));
+        CardManager[,] board = OwnBoard(player);
+        CardManager[,] opponentBoard = OwnBoard(OppositeState(player));
 
         // Passiv on same line
         if (board[row, 1] != null)
@@ -894,7 +903,7 @@ public class GameManager : MonoBehaviour
         return State.PLAYER1;
     }
 
-    private CardManager[,] ownBoard(State player)
+    private CardManager[,] OwnBoard(State player)
     {
         switch (player)
         {

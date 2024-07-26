@@ -29,6 +29,7 @@ public class CardImagesManager : MonoBehaviour
     [SerializeField] private Sprite id_20;
     [SerializeField] private Sprite id_21;
     [SerializeField] private Sprite id_22;
+    [SerializeField] private Sprite id_24;
     
     [Header("Default image")]
     [SerializeField] private Sprite defaultImage;
@@ -77,6 +78,8 @@ public class CardImagesManager : MonoBehaviour
                 return id_21;
             case 22: // Deviation
                 return id_22;
+            case 24: // Shield
+                return id_24;
             case -1:
             default:
                 Debug.Log("No image set for this card");
