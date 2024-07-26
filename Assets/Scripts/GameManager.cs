@@ -17,6 +17,10 @@ public class GameManager : MonoBehaviour
     public List<GameObject> selectors_p1;
     public List<GameObject> selectors_p2;
 
+    // For moving creature position
+    public List<GameObject> permutators_p1;
+    public List<GameObject> permutators_p2;
+
     [Header("UI")]
     [SerializeField] private CentralTextHandler centralTextHandler;
     [SerializeField] private TextMeshProUGUI remainingMovesText;
@@ -61,6 +65,7 @@ public class GameManager : MonoBehaviour
         InitUI();
         DrawCards();
         HideSelectors();
+        HidePositionForPermutation();
         DeselectCard();
         ResetRemainingMoves();
     }
@@ -223,6 +228,7 @@ public class GameManager : MonoBehaviour
         HideSelectors();
         HideClickableForEffect();
         HideClickableForTarget();
+        HidePositionForPermutation();
         switch (selectedCard.cardType)
         {
             case CardManager.CardType.CREATURE:
@@ -480,6 +486,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ShowPositionForPermutation(State currentPlayer)
+    {
+        switch (currentPlayer)
+        {
+            case State.PLAYER1:
+                foreach(GameObject go in permutators_p1)
+                {
+                    go.SetActive(true);
+                }
+                break;
+            case State.PLAYER2:
+                foreach(GameObject go in permutators_p2)
+                {
+                    go.SetActive(true);
+                }
+                break;
+        }
+    }
+
+    private void HidePositionForPermutation()
+    {
+        foreach(GameObject go in permutators_p1)
+        {
+            go.SetActive(false);
+        }
+        foreach(GameObject go in permutators_p2)
+        {
+            go.SetActive(false);
+        }
+    }
+
     public void PlaceSelectedCard(Transform parent, int row, int col)
     {
         // Don't do anything if no cards selected
@@ -534,6 +571,38 @@ public class GameManager : MonoBehaviour
         // TODO: apply effects if any (or here never?)
     }
 
+    public void PermutateSelectedCard(Transform parent, int row, int col)
+    {
+        // TODO: move card (marked for effect) here
+        // Don't do anything if no cards selected
+        if (selectedEffectCard == null)
+            return;
+
+        // Modify board
+        CardManager[,] board = OwnBoard(currentState);
+        Vector2 old_pos = CardPositionOnBoard(selectedEffectCard, currentState);
+        // Remove from old position
+        board[(int)old_pos[ROW], (int)old_pos[COL]] = null;
+        // Add to new
+        board[row, col] = selectedEffectCard;
+
+        // Place selected card as child of the provided parent
+        selectedEffectCard.gameObject.transform.SetParent(parent);
+        RectTransform rt = selectedEffectCard.gameObject.GetComponent<RectTransform>();
+        
+        // Set anchors
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+
+        rt.sizeDelta = parent.GetComponent<RectTransform>().sizeDelta;
+
+        // Reset physical position
+        selectedEffectCard.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+
+        HidePositionForPermutation();
+    }
+
     public void MarkForEffect(CardManager cm)
     {
         // Possibly deselect previously selected effect
@@ -559,6 +628,9 @@ public class GameManager : MonoBehaviour
                 break;
             case 2:
                 cm.IncrementValue(2);
+                break;
+            case 3:
+                ShowPositionForPermutation(currentState);
                 break;
         }
 

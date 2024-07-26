@@ -21,6 +21,7 @@ public class CardImagesManager : MonoBehaviour
     [Header("Instantaneous images")]
     [SerializeField] private Sprite id_09;
     [SerializeField] private Sprite id_14;
+    [SerializeField] private Sprite id_15;
     [SerializeField] private Sprite id_16;
 
     [Header("Passiv images")]
@@ -63,7 +64,9 @@ public class CardImagesManager : MonoBehaviour
             case 13:
                 return id_09;
             case 14: // Fortify
-                return id_14;  // Fortify
+                return id_14;
+            case 15: // Permutation
+                return id_15;
             case 16: // Exchange
                 return id_16;
             // ########### PASSIV ###########

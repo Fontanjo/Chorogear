@@ -12,6 +12,11 @@ public class PlaceSelector : MonoBehaviour
         GameManager.Instance.PlaceSelectedCard(transform.parent, row, col);
     }
 
+    public void MarkForPermutation()
+    {
+        GameManager.Instance.PermutateSelectedCard(transform.parent, row, col);
+    }
+
     public int Row()
     {
         return row;
