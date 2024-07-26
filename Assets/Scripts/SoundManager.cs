@@ -73,7 +73,7 @@ public class SoundManager : MonoBehaviour
                 break;
             // ########### PASSIV ###########
             case 11:
-                soundSource.PlayOneShot(id_11, 1.0f);
+                soundSource.PlayOneShot(id_11, 2.0f);
                 break;
             // ########### DEFAULT ###########
             case -1:
