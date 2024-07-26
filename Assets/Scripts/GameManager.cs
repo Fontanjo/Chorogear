@@ -697,6 +697,10 @@ public class GameManager : MonoBehaviour
                         attack_value = defense_value;
                     }
                 }
+                if (cm.cardEffectId == 23) // +1 in defense
+                {
+                    defense_value += 1;
+                }
                 // When attacking, if one value > other, destroy weaker card. Else destroy both if even force
                 if (attack_value >= defense_value)
                 {

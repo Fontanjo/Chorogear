@@ -9,6 +9,8 @@ public class SoundManager : MonoBehaviour
 
     [Header("Audio source element")]
     [SerializeField] private AudioSource source;
+    [SerializeField] private AudioSource soundSource;
+
 
     [Header("UI audio")]
     [SerializeField] private AudioClip intro_clip;
@@ -27,6 +29,7 @@ public class SoundManager : MonoBehaviour
 
     [Header("Audio clip for instantaneous cards")]
     [SerializeField] private AudioClip id_09;
+    [SerializeField] private AudioClip id_10;
 
     [Header("Audio clip for passiv cards")]
     [SerializeField] private AudioClip id_11;
@@ -38,36 +41,39 @@ public class SoundManager : MonoBehaviour
         {
             // ########### CREATURES ###########
             case 1:
-                source.PlayOneShot(id_01, 1.0f);
+                soundSource.PlayOneShot(id_01, 1.0f);
                 break;
             case 2:
-                source.PlayOneShot(id_02, 1.0f);
+                soundSource.PlayOneShot(id_02, 1.0f);
                 break;
             case 3:
-                source.PlayOneShot(id_03, 1.0f);
+                soundSource.PlayOneShot(id_03, 1.0f);
                 break;
             case 4:
-                source.PlayOneShot(id_04, 1.0f);
+                soundSource.PlayOneShot(id_04, 1.0f);
                 break;
             case 5:
-                source.PlayOneShot(id_05, 1.0f);
+                soundSource.PlayOneShot(id_05, 1.0f);
                 break;
             case 6:
-                source.PlayOneShot(id_06, 1.0f);
+                soundSource.PlayOneShot(id_06, 1.0f);
                 break;
             case 7:
-                source.PlayOneShot(id_07, 1.0f);
+                soundSource.PlayOneShot(id_07, 1.0f);
                 break;
             case 8:
-                source.PlayOneShot(id_08, 1.0f);
+                soundSource.PlayOneShot(id_08, 1.0f);
                 break;
             // ########### INSTANTANEOUS ###########
-            case 9:
-                source.PlayOneShot(id_09, 1.0f);
+            case 9: // Attack
+                soundSource.PlayOneShot(id_09, 1.0f);
+                break;
+            case 10: // Others
+                soundSource.PlayOneShot(id_10, 1.0f);
                 break;
             // ########### PASSIV ###########
             case 11:
-                source.PlayOneShot(id_11, 1.0f);
+                soundSource.PlayOneShot(id_11, 1.0f);
                 break;
             // ########### DEFAULT ###########
             case -1:
