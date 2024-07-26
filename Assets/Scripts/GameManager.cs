@@ -603,17 +603,36 @@ public class GameManager : MonoBehaviour
                 // When attacking, if one value > other, destroy weaker card. Else destroy both if even force
                 if (attack_value >= defense_value)
                 {
-                    // Destroy defense (target) card
-                    switch(currentState)
+                    Debug.Log("Attacking passiv");
+                    // TODO: check if there is a diversion card
+                    bool is_passiv = cm.cardType == CardManager.CardType.PASSIV;
+                    int row_diversion = -1;
+
+                    CardManager[,] opponentBoard = ownBoard(OppositeState(currentState));
+
+                    // TODO: check if there is a diversion card (effect 13)
+                    for (int i = 0; i < opponentBoard.GetLength(0); i++)
                     {
-                        case State.PLAYER1:
-                            p2.deck.AddCard(cm.ToCardObject());
+                        if (opponentBoard[i, PASSIV_COL] != null && opponentBoard[i, PASSIV_COL].cardEffectId == 13)
+                        {
+                            row_diversion = i;
                             break;
-                        case State.PLAYER2:
-                            p1.deck.AddCard(cm.ToCardObject());
-                            break;
+                        }
                     }
-                    Destroy(cm.gameObject);
+
+                    if (is_passiv && row_diversion != -1)
+                    {
+                        // Destroy diversion instead (might as well be the target)
+                        CardManager diversion_card = opponentBoard[row_diversion, PASSIV_COL];
+                        ownDeck(OppositeState(currentState)).AddCard(diversion_card.ToCardObject());
+                        Destroy(diversion_card.gameObject);
+                    }
+                    else
+                    {
+                        // Destroy defense (target) card
+                        ownDeck(OppositeState(currentState)).AddCard(cm.ToCardObject());
+                        Destroy(cm.gameObject);
+                    }
                 }
                 if (defense_value >= attack_value)
                 {
