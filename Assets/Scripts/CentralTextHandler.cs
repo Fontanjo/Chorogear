@@ -8,6 +8,10 @@ public class CentralTextHandler : MonoBehaviour
     [SerializeField] private GameObject bg_p1;
     [SerializeField] private GameObject bg_p2;
 
+    [SerializeField] private GameObject cards_bg_p1;
+    [SerializeField] private GameObject cards_bg_p2;
+
+
     [SerializeField] private TextMeshProUGUI text;
 
     public void SetPlayerTurn(int turn)
@@ -16,12 +20,19 @@ public class CentralTextHandler : MonoBehaviour
         {
             case 1:
                 bg_p1.SetActive(true);
+                cards_bg_p1.SetActive(true);
+
                 bg_p2.SetActive(false);
+                cards_bg_p2.SetActive(false);
+
                 text.text = "Player 1";
                 break;
             case 2:
                 bg_p1.SetActive(false);
+                cards_bg_p1.SetActive(false);
+
                 bg_p2.SetActive(true);
+                cards_bg_p2.SetActive(true);
                 text.text = "Player 2";
                 break;
             default:
