@@ -717,12 +717,23 @@ public class GameManager : MonoBehaviour
         switch (selectedCard.cardEffectId)
         {
             case 0: // Attack
-                Debug.Log("Attacking player");
-                // if ()
                 // TODO: check if there is a deviation card
-                int attack_value = selectedEffectCard.cardValue;
-                attack_value += PassiveEffectOnRowN((int)att_pos[ROW], currentState);
-                pm.TakeDamage(attack_value);
+                Debug.Log("Attack player");
+                Debug.Log(opponentBoard[(int)att_pos[ROW], PASSIV_COL]);
+                if (opponentBoard[(int)att_pos[ROW], PASSIV_COL] != null && opponentBoard[(int)att_pos[ROW], PASSIV_COL].cardEffectId == 13)
+                {
+                    // Destroy both
+                    ownDeck(currentState).AddCard(selectedEffectCard.ToCardObject());
+                    Destroy(selectedEffectCard.gameObject);
+                    ownDeck(OppositeState(currentState)).AddCard(opponentBoard[(int)att_pos[ROW], PASSIV_COL].ToCardObject());
+                    Destroy(opponentBoard[(int)att_pos[ROW], PASSIV_COL].gameObject);
+                }
+                else
+                {
+                    int attack_value = selectedEffectCard.cardValue;
+                    attack_value += PassiveEffectOnRowN((int)att_pos[ROW], currentState);
+                    pm.TakeDamage(attack_value);
+                }
                 break;
             default:
                 break;
@@ -768,9 +779,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private SO_Deck ownDeck(State player)
+    {
+        switch (player)
+        {
+            case State.PLAYER1:
+                return p1.deck;
+            case State.PLAYER2:
+                return p2.deck;
+            default:
+                return p1.deck;
+        }
+    }
+
     private int PassiveEffectOnRowN(int row, State player)
     {
-        Debug.Log("Row " + row);
         int v = 0;
 
         CardManager[,] board = ownBoard(player);
@@ -823,7 +846,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Debug.Log("Applying " + v + " effect");
+        // Debug.Log("Applying " + v + " effect");
         return v;
     }
 

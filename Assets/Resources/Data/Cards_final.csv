@@ -19,6 +19,6 @@ Passif;Corne de guerre;+1 d'attaque sur la ligne;0;18;10;11
 Passif;Diversion;;0;19;-1;11
 Passif;Gaz toxique;-1 d'attaque pour les creatures adverses sur cette ligne;0;20;12;11
 Passif;Armure;;0;21;-1;11
-Passif;Deviation;;0;22;-1;11
+Passif;Deviation;;0;22;13;11
 Passif;Porte étendare;+2 d'attaque sur la ligne et -1 d'attaque sur les lignes adjacente.;0;23;11;11
 Passif;Bouclier;;0;24;-1;11
