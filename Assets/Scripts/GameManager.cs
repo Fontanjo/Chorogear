@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI topCentralText;
     [SerializeField] private TextMeshProUGUI remainingMovesText;
+    [SerializeField] private VictoryPanel victoryPanel;
 
     public enum State
     {
@@ -114,6 +115,15 @@ public class GameManager : MonoBehaviour
     // Move the game to the next state
     public void NextState()
     {
+        if (p1.hp <= 0)
+        {
+            victoryPanel.ShowVictory("Player 2");
+        }
+        else if (p2.hp <= 0)
+        {
+            victoryPanel.ShowVictory("Player 1");
+        }
+
         List<GameObject> toDestroy = new List<GameObject>();
         SO_Deck current_player_deck = p1.deck; // initialize with p1, possibly change in switch
 
@@ -556,8 +566,6 @@ public class GameManager : MonoBehaviour
 
         // Mark as played
         DecreaseRemainingMoves();
-
-        // TODO: Pass to next turn if enough cards played
 
         // Mark cards as not clickable for effect anymore
         HideClickableForEffect();
