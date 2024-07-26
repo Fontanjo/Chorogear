@@ -557,6 +557,9 @@ public class GameManager : MonoBehaviour
             case 1: // Exchange creature with opponent on the same line
                 ShowActivableCardsTarget(currentState, row, 0);
                 break;
+            case 2:
+                cm.IncrementValue(2);
+                break;
         }
 
         // TODO: Block clicking on next card
