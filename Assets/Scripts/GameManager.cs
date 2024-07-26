@@ -603,17 +603,14 @@ public class GameManager : MonoBehaviour
                 // When attacking, if one value > other, destroy weaker card. Else destroy both if even force
                 if (attack_value >= defense_value)
                 {
-                    Debug.Log("Attacking passiv");
-                    // TODO: check if there is a diversion card
-                    bool is_passiv = cm.cardType == CardManager.CardType.PASSIV;
-                    int row_diversion = -1;
-
                     CardManager[,] opponentBoard = ownBoard(OppositeState(currentState));
 
-                    // TODO: check if there is a diversion card (effect 13)
+                    // Check if there is a diversion card (effect 14)
+                    bool is_passiv = cm.cardType == CardManager.CardType.PASSIV;
+                    int row_diversion = -1;
                     for (int i = 0; i < opponentBoard.GetLength(0); i++)
                     {
-                        if (opponentBoard[i, PASSIV_COL] != null && opponentBoard[i, PASSIV_COL].cardEffectId == 13)
+                        if (opponentBoard[i, PASSIV_COL] != null && opponentBoard[i, PASSIV_COL].cardEffectId == 14)
                         {
                             row_diversion = i;
                             break;
