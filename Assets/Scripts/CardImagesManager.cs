@@ -30,6 +30,7 @@ public class CardImagesManager : MonoBehaviour
     [SerializeField] private Sprite id_20;
     [SerializeField] private Sprite id_21;
     [SerializeField] private Sprite id_22;
+    [SerializeField] private Sprite id_23;
     [SerializeField] private Sprite id_24;
     
     [Header("Default image")]
@@ -81,6 +82,8 @@ public class CardImagesManager : MonoBehaviour
                 return id_21;
             case 22: // Deviation
                 return id_22;
+            case 23: // Banner holder
+                return id_23;
             case 24: // Shield
                 return id_24;
             case -1:
