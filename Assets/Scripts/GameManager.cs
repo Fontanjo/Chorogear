@@ -504,11 +504,12 @@ public class GameManager : MonoBehaviour
         // Mark as played
         DecreaseRemainingMoves();
 
+        // Play sound
+        SoundManager.Instance.PlayAudioById(selectedCard.cardAudioId);
+        
         // Deselect card
         DeselectCard();
         HideSelectors();
-
-        // TODO: play sound
 
         // TODO: apply effects if any (or here never?)
     }
@@ -734,19 +735,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void Awake() 
-    { 
-        // If there is an instance, and it's not me, delete myself.
-        if (Instance != null && Instance != this) 
-        { 
-            Destroy(this); 
-        } 
-        else 
-        { 
-            Instance = this; 
-        } 
-    }
-
     private Vector2 CardPositionOnBoard(CardManager cm, State player)
     {
         int x = -1;
@@ -800,5 +788,18 @@ public class GameManager : MonoBehaviour
         }
         // Default return, to make C# happy
         return State.PLAYER1;
+    }
+
+    private void Awake() 
+    { 
+        // If there is an instance, and it's not me, delete myself.
+        if (Instance != null && Instance != this) 
+        { 
+            Destroy(this); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        } 
     }
 }

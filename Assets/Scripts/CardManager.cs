@@ -20,6 +20,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private GameObject effectButton;
     [SerializeField] private GameObject targetButton;
+    [SerializeField] private Image backgroundImage;
 
     public int cardId;
     public int cardValue;
@@ -32,6 +33,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void Init(int id, int value, CardType type, int effect_id, int audio_id, string name, string description)
     {
         cardId = id;
+        backgroundImage.overrideSprite = CardImagesManager.Instance.GetCardImage(id);
 
         valueText.text = "" + value;
         cardValue = value;
@@ -47,7 +49,6 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         descriptionText.text = "" + description;
         cardDescription = description;
-
 
         effectButton.SetActive(false);
         targetButton.SetActive(false);

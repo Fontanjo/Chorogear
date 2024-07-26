@@ -574,6 +574,7 @@ MonoBehaviour:
   descriptionText: {fileID: 1698382187110874234}
   effectButton: {fileID: 7920775654344142711}
   targetButton: {fileID: 5741197785463158475}
+  backgroundImage: {fileID: 3413329824139724710}
   cardId: 0
   cardValue: 0
   cardEffectId: 0
