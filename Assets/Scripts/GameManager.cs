@@ -615,6 +615,23 @@ public class GameManager : MonoBehaviour
         selectedEffectCard.gameObject.transform.localPosition = new Vector3(0, 0, 0);
 
         HidePositionForPermutation();
+
+        // Play sound if the case
+        int id = selectedCard.cardEffectId;
+        switch (id)
+        {
+            case 3: // Permute
+                if (SoundManager.Instance != null)
+                {
+                    Debug.Log("Play permute");
+                    SoundManager.Instance.PlayAudioById(selectedCard.cardAudioId);
+                }
+                else
+                {
+                    Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene"); 
+                }
+                break;
+        }
     }
 
     public void MarkForEffect(CardManager cm)
@@ -656,6 +673,22 @@ public class GameManager : MonoBehaviour
         // TODO: play animation, e.g. shaking before removing
         // Remove card from board
         Destroy(selectedCard.gameObject);
+
+        // Play sound if the case
+        int id = selectedCard.cardEffectId;
+        switch (id)
+        {
+            case 2: // Fortify
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlayAudioById(selectedCard.cardAudioId);
+                }
+                else
+                {
+                    Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene"); 
+                }
+                break;
+        }
 
         // Mark as played
         DecreaseRemainingMoves();
@@ -827,14 +860,20 @@ public class GameManager : MonoBehaviour
         // Play sound
         if (effectImplemented)
         {
-            int id = selectedCard.cardAudioId;
-            if (SoundManager.Instance != null)
+            int id = selectedCard.cardEffectId;
+            switch (id)
             {
-                SoundManager.Instance.PlayAudioById(id);
-            }
-            else
-            {
-                Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene"); 
+                case 0:  // Attack
+                case 1: // Exchange
+                    if (SoundManager.Instance != null)
+                    {
+                        SoundManager.Instance.PlayAudioById(selectedCard.cardAudioId);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene"); 
+                    }
+                    break;
             }
         }
 
@@ -891,14 +930,19 @@ public class GameManager : MonoBehaviour
         }
 
         // Play sound
-        int id = selectedCard.cardAudioId;
-        if (SoundManager.Instance != null)
+        int id = selectedCard.cardEffectId;
+        switch(id)
         {
-            SoundManager.Instance.PlayAudioById(id);
-        }
-        else
-        {
-            Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene");
+            case 0: // Attack
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlayAudioById(selectedCard.cardAudioId);
+                }
+                else
+                {
+                    Debug.LogWarning("Sound manager not initialized, make sure to start the game from menu scene");
+                }
+                break;
         }
 
         // TODO: Apply effect
