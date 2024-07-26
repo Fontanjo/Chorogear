@@ -121,6 +121,10 @@ public class GameManager : MonoBehaviour
         // Deselect all
         DeselectCard();
         DeselectEffectCard();
+        HideSelectors();
+        HideClickableForTarget();
+        HideClickableForEffect();
+        HidePositionForPermutation();
     }
 
     // Move the game to the next state
