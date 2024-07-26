@@ -1,7 +1,7 @@
-Creature;Loup;Peut attaquer 1 colonne en meme temp et reduire de 1 l'attaque de chaque creature encore en vie.;1;1;-1;1
+Creature;Loup;Peut attaquer 1 colonne en meme temp et reduire de 1 l'attaque de chaque creature encore en vie.;2;1;-1;1
 Creature;Père grenouille;Si cette carte attaque elle gagne +1 d'attaque de manière definitive;1;2;20;2
 Creature;Bunnyfox;Si cette carte attaque une créature plus puissantes qu'elle, elle la détruit ainsi quelle meme;1;3;-1;3
-Creature;Slime;+1 d'attaque si une de mes autre creature attaque.;2;4;-1;4
+Creature;Slime;+1 d'attaque si une de mes autre creature attaque.;1;4;24;4
 Creature;Crâne d'oeuf;;2;5;-1;5
 Creature;Queen of cheese;+1 d'attaque si attaqué;2;6;-1;6
 Creature;Firewolf;;3;7;-1;7

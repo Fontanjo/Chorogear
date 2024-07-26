@@ -699,7 +699,6 @@ public class GameManager : MonoBehaviour
 
     public void MarkForTarget(CardManager cm)
     {
-        Debug.Log("Marked for target " + cm.cardName);
         HideClickableForTarget();
 
         Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
@@ -707,6 +706,7 @@ public class GameManager : MonoBehaviour
 
         bool effectImplemented = true;
         bool ownCardSurvived = true;
+        bool hasAttacked = true;
 
         switch (selectedCard.cardEffectId)
         {
@@ -759,6 +759,7 @@ public class GameManager : MonoBehaviour
                     {
                         // Don't do anything
                         Debug.Log("Shield has protected creature");
+                        hasAttacked = false;
                     }
                     else if (is_passiv && row_diversion != -1) // Diversion
                     {
@@ -813,31 +814,31 @@ public class GameManager : MonoBehaviour
                     Destroy(selectedEffectCard.gameObject);
                 }
                 break;
-                case 1: // Exchange
-                    Debug.Log("Selected for exchange");
-                    // Exchange on boardP1
-                    switch(currentState)
-                    {
-                        case State.PLAYER1:
-                            boardP2[(int)def_pos[ROW], (int)def_pos[COL]] = boardP1[(int)att_pos[ROW], (int)att_pos[COL]];
-                            boardP1[(int)att_pos[ROW], (int)att_pos[COL]] = cm;
-                            break;
-                        case State.PLAYER2:
-                            boardP1[(int)def_pos[ROW], (int)def_pos[COL]] = boardP2[(int)att_pos[ROW], (int)att_pos[COL]];
-                            boardP2[(int)att_pos[ROW], (int)att_pos[COL]] = cm;
-                            break;
-                    }
-                    // TODO: exchange on UI
-                    Transform tempParent = selectedEffectCard.transform.parent;
-                    selectedEffectCard.transform.SetParent(cm.transform.parent);
-                    selectedEffectCard.transform.localPosition = new Vector3(0, 0, 0);
+            case 1: // Exchange
+                Debug.Log("Selected for exchange");
+                // Exchange on boardP1
+                switch(currentState)
+                {
+                    case State.PLAYER1:
+                        boardP2[(int)def_pos[ROW], (int)def_pos[COL]] = boardP1[(int)att_pos[ROW], (int)att_pos[COL]];
+                        boardP1[(int)att_pos[ROW], (int)att_pos[COL]] = cm;
+                        break;
+                    case State.PLAYER2:
+                        boardP1[(int)def_pos[ROW], (int)def_pos[COL]] = boardP2[(int)att_pos[ROW], (int)att_pos[COL]];
+                        boardP2[(int)att_pos[ROW], (int)att_pos[COL]] = cm;
+                        break;
+                }
+                // TODO: exchange on UI
+                Transform tempParent = selectedEffectCard.transform.parent;
+                selectedEffectCard.transform.SetParent(cm.transform.parent);
+                selectedEffectCard.transform.localPosition = new Vector3(0, 0, 0);
 
-                    cm.transform.SetParent(tempParent);
-                    cm.transform.localPosition = new Vector3(0, 0, 0);
-                    break;
-                default:
-                    effectImplemented = false;
-                    break;
+                cm.transform.SetParent(tempParent);
+                cm.transform.localPosition = new Vector3(0, 0, 0);
+                break;
+            default:
+                effectImplemented = false;
+                break;
         }
 
         // Card effects that are applied after the turn
@@ -854,6 +855,20 @@ public class GameManager : MonoBehaviour
                     break;
                 default:
                     break;
+            }
+        }
+        if (hasAttacked)
+        {
+            // TODO: check for card with effect 24 in own board (creatures), if so add +1
+            CardManager[,] ownBoard = OwnBoard(currentState);
+            for (int i = 0; i < ownBoard.GetLength(ROW); i++)
+            {
+                // TODO: skip self
+                // TODO: add to attack to player
+                if (ownBoard[i, CREATURE_COL] != null && ownBoard[i, CREATURE_COL].cardEffectId == 24)
+                {
+                    ownBoard[i, CREATURE_COL].IncrementValue(1);
+                }
             }
         }
 
