@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
             CardManager cm = child.gameObject.GetComponent<CardManager>();
 
             // Add card to deck
-            current_player_deck.AddCard(new Card(cm.cardId, cm.cardValue, cm.cardType, cm.cardEffectId, cm.cardAudioId, cm.cardName, cm.cardDescription));
+            current_player_deck.AddCard(cm.ToCardObject());
 
             // Mark as object to destroy. Can not destroy directly while iterating
             toDestroy.Add(child.gameObject);
@@ -422,7 +422,6 @@ public class GameManager : MonoBehaviour
     /// Allow to click on cards to mark as target for an effect
     private void ShowActivableCardsTarget(State player, int row = -1, int col = -1)
     {
-        Debug.Log("Row " + row);
         switch(player)
         {
             case State.PLAYER2:
@@ -724,7 +723,7 @@ public class GameManager : MonoBehaviour
                 {
                     // Destroy both
                     ownDeck(currentState).AddCard(selectedEffectCard.ToCardObject());
-                    Destroy(selectedEffectCard.gameObject);
+                    Destroy(selectedEffectCard.gameObject); // TODO: check if the reference in board is set to null
                     ownDeck(OppositeState(currentState)).AddCard(opponentBoard[(int)att_pos[ROW], PASSIV_COL].ToCardObject());
                     Destroy(opponentBoard[(int)att_pos[ROW], PASSIV_COL].gameObject);
                 }
@@ -764,32 +763,6 @@ public class GameManager : MonoBehaviour
         }
 
         // TODO: Apply effect
-    }
-
-    private CardManager[,] ownBoard(State player)
-    {
-        switch (player)
-        {
-            case State.PLAYER1:
-                return boardP1;
-            case State.PLAYER2:
-                return boardP2;
-            default:
-                return boardP1;
-        }
-    }
-
-    private SO_Deck ownDeck(State player)
-    {
-        switch (player)
-        {
-            case State.PLAYER1:
-                return p1.deck;
-            case State.PLAYER2:
-                return p2.deck;
-            default:
-                return p1.deck;
-        }
     }
 
     private int PassiveEffectOnRowN(int row, State player)
@@ -893,6 +866,13 @@ public class GameManager : MonoBehaviour
         return new Vector2(x, y);
     }
 
+
+    // ###################################################################################
+    // ###################################################################################
+    // ###################################### UTILS ######################################
+    // ###################################################################################
+    // ###################################################################################
+
     private State OppositeState(State state)
     {
         switch (state)
@@ -904,6 +884,32 @@ public class GameManager : MonoBehaviour
         }
         // Default return, to make C# happy
         return State.PLAYER1;
+    }
+
+    private CardManager[,] ownBoard(State player)
+    {
+        switch (player)
+        {
+            case State.PLAYER1:
+                return boardP1;
+            case State.PLAYER2:
+                return boardP2;
+            default:
+                return boardP1;
+        }
+    }
+
+    private SO_Deck ownDeck(State player)
+    {
+        switch (player)
+        {
+            case State.PLAYER1:
+                return p1.deck;
+            case State.PLAYER2:
+                return p2.deck;
+            default:
+                return p1.deck;
+        }
     }
 
     private void Awake() 

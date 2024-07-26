@@ -25,6 +25,7 @@ public class CardImagesManager : MonoBehaviour
 
     [Header("Passiv images")]
     [SerializeField] private Sprite id_17;
+    [SerializeField] private Sprite id_19;
     [SerializeField] private Sprite id_20;
     [SerializeField] private Sprite id_21;
     [SerializeField] private Sprite id_22;
@@ -68,6 +69,8 @@ public class CardImagesManager : MonoBehaviour
             case 17: // Horn
             case 18:
                 return id_17;
+            case 19: // Diversion
+                return id_19;
             case 20: // Toxic gas
                 return id_20;
             case 21: // Armor

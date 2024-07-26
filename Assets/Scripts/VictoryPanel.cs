@@ -9,8 +9,7 @@ public class VictoryPanel : MonoBehaviour
 
     public void ShowVictory(string winner)
     {
-        winnerText.text = winner + " won the game!";
-        Debug.Log(winner + " won the game!");
+        winnerText.text = winner;
         gameObject.SetActive(true);
     }
 

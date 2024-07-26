@@ -25,6 +25,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public int cardId;
     public int cardValue;
+    public int cardInitialValue;
     public int cardEffectId;
     public int cardAudioId;
     public CardType cardType;
@@ -36,6 +37,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         cardId = id;
         backgroundImage.overrideSprite = CardImagesManager.Instance.GetCardImage(id);
 
+        cardInitialValue = val;
         cardValue = val;
         if (cardValue > 0)
             valueText.text = "" + cardValue;
@@ -141,6 +143,6 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public Card ToCardObject()
     {
-        return new Card(this.cardId, this.cardValue, this.cardType, this.cardEffectId, this.cardAudioId, this.cardName, this.cardDescription);
+        return new Card(this.cardId, this.cardInitialValue, this.cardType, this.cardEffectId, this.cardAudioId, this.cardName, this.cardDescription);
     }
 }
