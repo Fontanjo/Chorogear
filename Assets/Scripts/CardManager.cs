@@ -37,7 +37,10 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         backgroundImage.overrideSprite = CardImagesManager.Instance.GetCardImage(id);
 
         cardValue = val;
-        valueText.text = "" + cardValue;
+        if (cardValue > 0)
+            valueText.text = "" + cardValue;
+        else
+            valueText.text = "";
 
         cardType = type;
 

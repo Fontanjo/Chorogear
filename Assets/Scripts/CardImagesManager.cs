@@ -18,11 +18,15 @@ public class CardImagesManager : MonoBehaviour
     [SerializeField] private Sprite id_07;
     [SerializeField] private Sprite id_08;
 
-    // [Header("Passiv images")]
-
     [Header("Instantaneous images")]
     [SerializeField] private Sprite id_09;
+    [SerializeField] private Sprite id_14;
     [SerializeField] private Sprite id_16;
+
+    [Header("Passiv images")]
+    [SerializeField] private Sprite id_17;
+    [SerializeField] private Sprite id_20;
+    [SerializeField] private Sprite id_21;
     
     [Header("Default image")]
     [SerializeField] private Sprite defaultImage;
@@ -55,9 +59,18 @@ public class CardImagesManager : MonoBehaviour
             case 12:
             case 13:
                 return id_09;
+            case 14: // Fortify
+                return id_14;  // Fortify
             case 16: // Exchange
                 return id_16;
             // ########### PASSIV ###########
+            case 17: // Horn
+            case 18:
+                return id_17;
+            case 20: // Toxic gas
+                return id_20;
+            case 21: // Armor
+                return id_21;
             case -1:
             default:
                 Debug.Log("No image set for this card");

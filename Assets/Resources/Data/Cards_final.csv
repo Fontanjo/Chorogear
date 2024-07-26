@@ -5,7 +5,7 @@ Creature;Slime;;2;4;-1;4
 Creature;Crâne d'oeuf;;2;5;-1;5
 Creature;Queen of cheese;;2;6;-1;6
 Creature;Firewolf;;3;7;-1;7
-Creature;Deerbonny;;3;8;-1;8
+Creature;Deerbunny;;3;8;-1;8
 Instantane;Attaque;permet à une creature d'attaquer une fois;0;9;0;9
 Instantane;Attaque;permet à une creature d'attaquer une fois;0;10;0;9
 Instantane;Attaque;permet à une creature d'attaquer une fois;0;11;0;9

@@ -512,7 +512,14 @@ public class GameManager : MonoBehaviour
         DecreaseRemainingMoves();
 
         // Play sound
-        SoundManager.Instance.PlayAudioById(selectedCard.cardAudioId);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayAudioById(selectedCard.cardAudioId);
+        }
+        else
+        {
+            Debug.LogWarning("Sound manager not initialize, make sure to start the game from menu scene");
+        }
         
         // Deselect card
         DeselectCard();
@@ -676,7 +683,14 @@ public class GameManager : MonoBehaviour
         if (effectImplemented)
         {
             int id = selectedCard.cardAudioId;
-            SoundManager.Instance.PlayAudioById(id);
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayAudioById(id);
+            }
+            else
+            {
+                Debug.LogWarning("Sound manager not initialize, make sure to start the game from menu scene"); 
+            }
         }
 
         // TODO: Implement other effects
@@ -716,7 +730,14 @@ public class GameManager : MonoBehaviour
 
         // Play sound
         int id = selectedCard.cardAudioId;
-        SoundManager.Instance.PlayAudioById(id);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayAudioById(id);
+        }
+        else
+        {
+            Debug.LogWarning("Sound manager not initialize, make sure to start the game from menu scene");
+        }
 
         // TODO: Apply effect
     }

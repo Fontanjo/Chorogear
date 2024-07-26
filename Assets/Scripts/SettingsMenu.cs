@@ -45,10 +45,18 @@ public class SettingsMenu : MonoBehaviour
 
     }
 
-    public void Setvolume(float volume)
+    public void SetMusicVolume(float volume)
     {
         
-        audioMixer.SetFloat("Volume",volume);
+        audioMixer.SetFloat("MusicVolume",volume);
+
+
+    }
+
+    public void SetSoundVolume(float volume)
+    {
+
+        audioMixer.SetFloat("SoundVolume", volume);
 
 
     }
@@ -63,9 +71,6 @@ public class SettingsMenu : MonoBehaviour
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-
-    
-    
     }
 
 }

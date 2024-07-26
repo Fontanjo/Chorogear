@@ -10,6 +10,11 @@ public class SoundManager : MonoBehaviour
     [Header("Audio source element")]
     [SerializeField] private AudioSource source;
 
+    [Header("UI audio")]
+    [SerializeField] private AudioClip intro_clip;
+    [SerializeField] private AudioClip main_clip;
+    [SerializeField] private AudioClip button_clicked;
+
     [Header("Audio clip for creatures")]
     [SerializeField] private AudioClip id_01;
     [SerializeField] private AudioClip id_02;
@@ -76,6 +81,26 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void PlayIntroClip()
+    {
+        // source.Stop();
+        source.clip = intro_clip;
+        source.Play(0);
+    }
+
+    public void PlayMainClip()
+    {
+        // TODO: fade out intro / fade in main
+        source.Stop();
+        source.clip = main_clip;
+        source.Play(0);
+    }
+
+    public void ButtonClicked()
+    {
+        source.PlayOneShot(button_clicked, 1.0f);
+    }
+
 
     private void Awake() 
     { 
@@ -87,7 +112,8 @@ public class SoundManager : MonoBehaviour
         else 
         { 
             Instance = this;
-            Debug.Log("Instance initialized");
+                DontDestroyOnLoad(gameObject);
+                Debug.Log("Instance initialized");
         } 
     }
 }
