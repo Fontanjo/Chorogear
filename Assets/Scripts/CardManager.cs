@@ -7,6 +7,7 @@ using TMPro;
 
 public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    private float HIGHLIGHT_SCALE = 1.3f;
     public enum CardType
     {
         CREATURE, PASSIV, INSTANTANEOUS
@@ -86,7 +87,7 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         // TODO: handle rt not found
         RectTransform rt = gameObject.GetComponent<RectTransform>();
 
-        rt.localScale = new Vector3(1.2f, 1.2f, 1.0f);
+        rt.localScale = new Vector3(HIGHLIGHT_SCALE, HIGHLIGHT_SCALE, 1.0f);
     }
 
     public void DeHighlight()

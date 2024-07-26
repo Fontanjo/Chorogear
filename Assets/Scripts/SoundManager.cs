@@ -19,11 +19,17 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip id_06;
     [SerializeField] private AudioClip id_07;
     [SerializeField] private AudioClip id_08;
+
+    [Header("Audio clip for passiv cards")]
+    [SerializeField] private AudioClip id_11;
     
+    // [Header("Audio clip for instantaneous cards")]
+
     public void PlayAudioById(int audioID)
     {
         switch (audioID)
         {
+            // ########### CREATURES ###########
             case 1:
                 source.PlayOneShot(id_01, 1.0f);
                 break;
@@ -48,6 +54,12 @@ public class SoundManager : MonoBehaviour
             case 8:
                 source.PlayOneShot(id_08, 1.0f);
                 break;
+            // ########### INSTANTANEOUS ###########
+            // ########### PASSIV ###########
+            case 11:
+                source.PlayOneShot(id_11, 1.0f);
+                break;
+            // ########### DEFAULT ###########
             case -1:
                 Debug.Log("No audio set for this card");
                 // source.PlayOneShot(id_01, 1.0f);

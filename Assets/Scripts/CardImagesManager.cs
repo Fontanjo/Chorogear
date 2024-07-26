@@ -8,7 +8,7 @@ public class CardImagesManager : MonoBehaviour
 
     public static CardImagesManager Instance { get; private set; }
 
-    [Header("Audio clip for creatures")]
+    [Header("Creatures images")]
     [SerializeField] private Sprite id_01;
     [SerializeField] private Sprite id_02;
     [SerializeField] private Sprite id_03;
@@ -18,6 +18,12 @@ public class CardImagesManager : MonoBehaviour
     [SerializeField] private Sprite id_07;
     [SerializeField] private Sprite id_08;
 
+    // [Header("Passiv images")]
+
+    [Header("Instantaneous images")]
+    [SerializeField] private Sprite id_09;
+    [SerializeField] private Sprite id_16;
+    
     [Header("Default image")]
     [SerializeField] private Sprite defaultImage;
     
@@ -25,6 +31,7 @@ public class CardImagesManager : MonoBehaviour
     {
         switch (cardID)
         {
+            // ########### CREATURES ###########
             case 1:
                 return id_01;
             case 2:
@@ -41,6 +48,16 @@ public class CardImagesManager : MonoBehaviour
                 return id_07;
             case 8:
                 return id_08;
+            // ########### INSTANTANEOUS ###########
+            case 9:  // Attack
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+                return id_09;
+            case 16: // Exchange
+                return id_16;
+            // ########### PASSIV ###########
             case -1:
             default:
                 Debug.Log("No image set for this card");

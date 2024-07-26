@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> selectors_p2;
 
     [Header("UI")]
-    [SerializeField] private TextMeshProUGUI topCentralText;
+    [SerializeField] private CentralTextHandler centralTextHandler;
     [SerializeField] private TextMeshProUGUI remainingMovesText;
     [SerializeField] private VictoryPanel victoryPanel;
 
@@ -66,8 +66,7 @@ public class GameManager : MonoBehaviour
 
     public void InitUI()
     {
-        if (topCentralText != null)
-            topCentralText.text = "Player 1";
+        centralTextHandler.SetPlayerTurn(1);
     }
 
     public void DrawCards()
@@ -136,16 +135,14 @@ public class GameManager : MonoBehaviour
                 // Update state
                 currentState = State.PLAYER2;
                 // Update UI
-                if (topCentralText != null)
-                    topCentralText.text = "Player 2";
+                centralTextHandler.SetPlayerTurn(2);
                 break;
             case State.PLAYER2:
                 // Set destination deck
                 current_player_deck = p2.deck;
                 // Update state
                 currentState = State.PLAYER1;
-                if (topCentralText != null)
-                    topCentralText.text = "Player 1";
+                centralTextHandler.SetPlayerTurn(1);
                 break;
         }
 
