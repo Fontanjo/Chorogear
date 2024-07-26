@@ -750,6 +750,14 @@ public class GameManager : MonoBehaviour
                         Destroy(cm.gameObject);
                     }
                 }
+                else
+                {
+                    // If attacking a stronger creature, check if any effect applies
+                    if (selectedEffectCard.cardEffectId == 22) // Set enemy health to 0 on failed attack
+                    {
+                        cm.SetHPTo(0);
+                    }
+                }
                 if (defense_value >= attack_value)
                 {
                     // Record card destruction, do not apply later effects

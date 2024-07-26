@@ -66,6 +66,12 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         valueText.text = "" + cardValue;
     }
 
+    public void SetHPTo(int val)
+    {
+        cardValue = 0;
+        valueText.text = "" + cardValue;
+    }
+
     //Detect if the Cursor starts to pass over the GameObject
     public void OnPointerEnter(PointerEventData pointerEventData)
     {

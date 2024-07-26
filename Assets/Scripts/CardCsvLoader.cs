@@ -29,7 +29,7 @@ public class CardCsvLoader : MonoBehaviour
     void LoadCards()
     {
         string[] Data = csvAsset.text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-        for (int i = 1; i < Data.Length; i++)
+        for (int i = 0; i < Data.Length; i++)
         {
             string[] splitData = Data[i].Split(';');
             if (splitData.Length != 7)
