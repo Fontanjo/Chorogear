@@ -859,12 +859,16 @@ public class GameManager : MonoBehaviour
         }
         if (hasAttacked)
         {
-            // TODO: check for card with effect 24 in own board (creatures), if so add +1
+            // Check for card with effect 24 in own board (creatures), if so add +1
             CardManager[,] ownBoard = OwnBoard(currentState);
             for (int i = 0; i < ownBoard.GetLength(ROW); i++)
             {
-                // TODO: skip self
                 // TODO: add to attack to player
+                // Skip self
+                if (i == (int)att_pos[ROW])
+                {
+                    continue;
+                }
                 if (ownBoard[i, CREATURE_COL] != null && ownBoard[i, CREATURE_COL].cardEffectId == 24)
                 {
                     ownBoard[i, CREATURE_COL].IncrementValue(1);
@@ -903,15 +907,14 @@ public class GameManager : MonoBehaviour
         // Get attacker position
         Vector2 att_pos = CardPositionOnBoard(selectedEffectCard, currentState);
 
+        CardManager[,] ownBoard = OwnBoard(currentState);
         CardManager[,] opponentBoard = OwnBoard(OppositeState(currentState));
 
         // The effect is on the card that is being played, not on the one on the table
         switch (selectedCard.cardEffectId)
         {
             case 0: // Attack
-                // TODO: check if there is a deviation card
-                Debug.Log("Attack player");
-                Debug.Log(opponentBoard[(int)att_pos[ROW], PASSIV_COL]);
+                // Check if there is a deviation card
                 if (opponentBoard[(int)att_pos[ROW], PASSIV_COL] != null && opponentBoard[(int)att_pos[ROW], PASSIV_COL].cardEffectId == 13)
                 {
                     // Destroy both
@@ -942,6 +945,21 @@ public class GameManager : MonoBehaviour
                 break;
             default:
                 break;
+        }
+
+        // Check for card with effect 24 in own board (creatures), if so add +1
+        for (int i = 0; i < ownBoard.GetLength(ROW); i++)
+        {
+            // TODO: add to attack to player
+            // Skip self
+            if (i == (int)att_pos[ROW])
+            {
+                continue;
+            }
+            if (ownBoard[i, CREATURE_COL] != null && ownBoard[i, CREATURE_COL].cardEffectId == 24)
+            {
+                ownBoard[i, CREATURE_COL].IncrementValue(1);
+            }
         }
 
         // Play sound
