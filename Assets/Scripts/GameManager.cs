@@ -562,15 +562,7 @@ public class GameManager : MonoBehaviour
         // TODO: Block clicking on next card
 
         // Put it back in the deck
-        switch(currentState)
-        {
-            case State.PLAYER1:
-                p1.deck.AddCard(selectedCard.ToCardObject());
-                break;
-            case State.PLAYER2:
-                p2.deck.AddCard(selectedCard.ToCardObject());
-                break;
-        }
+        ownDeck(currentState).AddCard(selectedCard.ToCardObject());
 
         // TODO: play animation, e.g. shaking before removing
         // Remove card from board

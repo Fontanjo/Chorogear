@@ -1959,7 +1959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deck: {fileID: 11400000, guid: 5a1043d6af26f4af999ea1945e966b24, type: 2}
   cardsEachTurn: 5
-  hp: 2
+  hp: 10
   hpText: {fileID: 1434738145}
   targetButton: {fileID: 964716445}
 --- !u!4 &373309526
