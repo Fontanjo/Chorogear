@@ -36,6 +36,7 @@ public class PlayerManager : MonoBehaviour
     {
         hp -= damage;
         UpdateTexts();
+        GameManager.Instance.CheckVictory();
     }
 
     public void IncreaseHealth(int points)

@@ -127,8 +127,7 @@ public class GameManager : MonoBehaviour
         HidePositionForPermutation();
     }
 
-    // Move the game to the next state
-    public void NextState()
+    public void CheckVictory()
     {
         if (p1.hp <= 0)
         {
@@ -138,6 +137,11 @@ public class GameManager : MonoBehaviour
         {
             victoryPanel.ShowVictory("Player 1");
         }
+    }
+
+    // Move the game to the next state
+    public void NextState()
+    {
 
         List<GameObject> toDestroy = new List<GameObject>();
         SO_Deck current_player_deck = p1.deck; // initialize with p1, possibly change in switch
