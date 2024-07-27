@@ -821,7 +821,7 @@ public class GameManager : MonoBehaviour
                     ownCardSurvived = false;
 
                     // Destroy attack (own) card
-                    CardManager[,] ownDeck = OwnDeck(currentState);
+                    SO_Deck ownDeck = OwnDeck(currentState);
                     ownDeck.AddCard(selectedEffectCard.ToCardObject());
                     Destroy(selectedEffectCard.gameObject);
                 }
