@@ -742,16 +742,16 @@ public class GameManager : MonoBehaviour
                 if ((int)def_pos[COL] == CREATURE_COL)
                     defense_value += PassiveEffectOnRowN((int)def_pos[ROW], OppositeState(currentState));
                 // Check if effects changes value
+                if (cm.cardEffectId == 23) // +1 in defense
+                {
+                    defense_value += 1;
+                }
                 if (selectedEffectCard.cardEffectId == 21) // Match stronger opponent power in attack
                 {
                     if (defense_value > attack_value)
                     {
                         attack_value = defense_value;
                     }
-                }
-                if (cm.cardEffectId == 23) // +1 in defense
-                {
-                    defense_value += 1;
                 }
                 // When attacking, if one value > other, destroy weaker card. Else destroy both if even force
                 if (attack_value >= defense_value)

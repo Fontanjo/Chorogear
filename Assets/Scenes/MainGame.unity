@@ -7993,7 +7993,9 @@ MonoBehaviour:
     lui est assign\xE9e. Celle-ci est r\xE9partie en 4 colonnes de 3 lignes. Les
     colonnes centrales sont r\xE9serv\xE9es aux \u201Ccr\xE9atures\u201D, les colonnes
     ext\xE9rieures sont r\xE9serv\xE9es aux \u201Cpassifs\u201D. Les \u201Cinstantan\xE9s\u201D
-    ciblent des cartes sur la table et ne prennent pas d\u2019emplacement."
+    ciblent des cartes sur la table et ne prennent pas d\u2019emplacement. Additionnellement,
+    chaque joueur peut m\xE9langer des cartes en jeu dans sa pioche pour jouer des
+    cartes de sa main \xE0 la place."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
