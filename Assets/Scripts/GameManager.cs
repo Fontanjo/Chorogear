@@ -531,17 +531,23 @@ public class GameManager : MonoBehaviour
         if (selectedCard == null)
             return;
 
-        // Add card to board
-        switch (currentState)
+        CardManager[,] ownBoard = OwnBoard(currentState);
+
+        // If passiv card, it can replace an existing one
+        if (col == PASSIV_COL)
         {
-            case State.PLAYER1:
-                boardP1[row, col] = selectedCard;
-                break;
-            case State.PLAYER2:
-                boardP2[row, col] = selectedCard;
-                break;
+            CardManager existingCard = ownBoard[row, col];
+            // Put the card back to deck
+            if (existingCard != null)
+            {
+                OwnDeck(currentState).AddCard(existingCard.ToCardObject());
+                Destroy(existingCard.gameObject);
+            }
         }
 
+        // Add card to board
+        ownBoard[row, col] = selectedCard;
+        
         // Check if card has a direct effect
         if (selectedCard.cardEffectId == 16) // Armor
         {
@@ -559,6 +565,11 @@ public class GameManager : MonoBehaviour
         // Place selected card as child of the provided parent
         selectedCard.gameObject.transform.SetParent(parent);
         RectTransform rt = selectedCard.gameObject.GetComponent<RectTransform>();
+        // Show passiv cards BEHIND selector, so that it can be selected for placing another card
+        if (col == PASSIV_COL)
+        {
+            rt.SetSiblingIndex(0);
+        }
         
         // Set anchors
         rt.anchorMin = new Vector2(0.5f, 0.5f);
@@ -676,7 +687,7 @@ public class GameManager : MonoBehaviour
         // TODO: Block clicking on next card
 
         // Put it back in the deck
-        ownDeck(currentState).AddCard(selectedCard.ToCardObject());
+        OwnDeck(currentState).AddCard(selectedCard.ToCardObject());
 
         // TODO: play animation, e.g. shaking before removing
         // Remove card from board
@@ -773,7 +784,7 @@ public class GameManager : MonoBehaviour
                     {
                         // Destroy diversion instead (might as well be the target)
                         CardManager diversion_card = opponentBoard[row_diversion, PASSIV_COL];
-                        ownDeck(OppositeState(currentState)).AddCard(diversion_card.ToCardObject());
+                        OwnDeck(OppositeState(currentState)).AddCard(diversion_card.ToCardObject());
                         Destroy(diversion_card.gameObject);
                     }
                     else
@@ -792,7 +803,7 @@ public class GameManager : MonoBehaviour
                             }
                         }
                         // Destroy defense (target) card
-                        ownDeck(OppositeState(currentState)).AddCard(cm.ToCardObject());
+                        OwnDeck(OppositeState(currentState)).AddCard(cm.ToCardObject());
                         Destroy(cm.gameObject);
                     }
                 }
@@ -926,9 +937,9 @@ public class GameManager : MonoBehaviour
                 if (opponentBoard[(int)att_pos[ROW], PASSIV_COL] != null && opponentBoard[(int)att_pos[ROW], PASSIV_COL].cardEffectId == 13)
                 {
                     // Destroy both
-                    ownDeck(currentState).AddCard(selectedEffectCard.ToCardObject());
+                    OwnDeck(currentState).AddCard(selectedEffectCard.ToCardObject());
                     Destroy(selectedEffectCard.gameObject); // TODO: check if the reference in board is set to null
-                    ownDeck(OppositeState(currentState)).AddCard(opponentBoard[(int)att_pos[ROW], PASSIV_COL].ToCardObject());
+                    OwnDeck(OppositeState(currentState)).AddCard(opponentBoard[(int)att_pos[ROW], PASSIV_COL].ToCardObject());
                     Destroy(opponentBoard[(int)att_pos[ROW], PASSIV_COL].gameObject);
                 }
                 else
@@ -1123,7 +1134,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private SO_Deck ownDeck(State player)
+    private SO_Deck OwnDeck(State player)
     {
         switch (player)
         {
