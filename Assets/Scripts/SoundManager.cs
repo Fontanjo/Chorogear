@@ -33,6 +33,12 @@ public class SoundManager : MonoBehaviour
 
     [Header("Audio clip for passiv cards")]
     [SerializeField] private AudioClip id_11;
+
+    [Header("Audio clip for avatar selection")]
+    [SerializeField] private AudioClip char_00;
+    [SerializeField] private AudioClip char_01;
+    [SerializeField] private AudioClip char_02;
+    [SerializeField] private AudioClip char_03;
     
 
     public void PlayAudioById(int audioID)
@@ -84,6 +90,25 @@ public class SoundManager : MonoBehaviour
                 Debug.Log("No audio set for this card");
                 // source.PlayOneShot(id_01, 1.0f);
                 break;               
+        }
+    }
+
+    public void PlayCharacterAudio(int audioID)
+    {
+        switch (audioID)
+        {
+            case 0:
+                soundSource.PlayOneShot(char_00, 1.0f);
+                break;
+            case 1:
+                soundSource.PlayOneShot(char_01, 1.0f);
+                break;
+            case 2:
+                soundSource.PlayOneShot(char_02, 1.0f);
+                break;
+            case 3:
+                soundSource.PlayOneShot(char_03, 1.0f);
+                break;
         }
     }
 

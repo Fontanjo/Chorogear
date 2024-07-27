@@ -2177,8 +2177,10 @@ MonoBehaviour:
   deck: {fileID: 11400000, guid: 5a1043d6af26f4af999ea1945e966b24, type: 2}
   cardsEachTurn: 5
   hp: 10
+  avatarImage: {fileID: 543275477}
   hpText: {fileID: 1434738145}
   targetButton: {fileID: 964716445}
+  player_name: Player2
 --- !u!4 &373309526
 Transform:
   m_ObjectHideFlags: 0
@@ -3391,6 +3393,10 @@ MonoBehaviour:
   id_23: {fileID: 21300000, guid: 8bf23f6a6ea880509957d4e28ca22ad2, type: 3}
   id_24: {fileID: 21300000, guid: 87b9f7bcd6a01c4b4a5c217c27d7ee82, type: 3}
   defaultImage: {fileID: 21300000, guid: 5d6095780a40bdc8baec0d6d98541e10, type: 3}
+  char_00: {fileID: 21300000, guid: 8f9c469ef5bf1399cbe8b07ea73b061d, type: 3}
+  char_01: {fileID: 21300000, guid: 40f13596dd74575bc98972f356210c10, type: 3}
+  char_02: {fileID: 21300000, guid: 1e1371e1fb9ad46b78aec52451f3df99, type: 3}
+  char_03: {fileID: 21300000, guid: 8a2b924f31c5c1d8d9f209075743d284, type: 3}
 --- !u!4 &565782371
 Transform:
   m_ObjectHideFlags: 0
@@ -6673,8 +6679,10 @@ MonoBehaviour:
   deck: {fileID: 11400000, guid: 5f894a5ce1f54bc4593d2d649e39a9c5, type: 2}
   cardsEachTurn: 5
   hp: 10
+  avatarImage: {fileID: 1728883462}
   hpText: {fileID: 675042500}
   targetButton: {fileID: 1930886135}
+  player_name: Player1
 --- !u!4 &1095805515
 Transform:
   m_ObjectHideFlags: 0

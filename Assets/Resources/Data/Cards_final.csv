@@ -1,24 +1,24 @@
-Creature;Loup;Si la créature adverse survit sont attaque est réduite à 0;1;1;22;1
+Creature;Loup;Si la créature adverse survit son attaque est réduite à 0;1;1;22;1
 Creature;Père grenouille;Si cette carte attaque elle gagne +1 d'attaque de manière definitive;1;2;20;2
-Creature;Bunnyfox;Si cette carte attaque une créature plus puissantes qu'elle, elle la détruit ainsi quelle meme;1;3;21;3
-Creature;Slime;+1 d'attaque si une de mes autre creature attaque;2;4;24;4
+Creature;Bunnyfox;Si cette carte attaque une créature plus puissante qu'elle, elle la détruit ainsi quelle même;1;3;21;3
+Creature;Slime;+1 d'attaque si une de vos autres créatures attaque;2;4;24;4
 Creature;Crâne d'oeuf;;2;5;-1;5
-Creature;Queen of cheese;+1 d'attaque si attaqué;2;6;23;6
+Creature;Queen of cheese;+1 d'attaque si attaquée;2;6;23;6
 Creature;Firewolf;;3;7;-1;7
 Creature;Deerbunny;;3;8;-1;8
-Instantane;Attaque;permet à une creature d'attaquer une fois;0;9;0;9
-Instantane;Attaque;permet à une creature d'attaquer une fois;0;10;0;9
-Instantane;Attaque;permet à une creature d'attaquer une fois;0;11;0;9
-Instantane;Attaque;permet à une creature d'attaquer une fois;0;12;0;9
-Instantane;Attaque;permet à une creature d'attaquer une fois;0;13;0;9
-Instantane;Fortifiant;+2 d'attaque pour une creature;0;14;2;10
-Instantane;Pérmutation;Change une creature de ligne;0;15;3;10
-Instantane;Echange;Echanger une de vos créature avec la creature d'en face;0;16;1;10
-Passif;Corne de guerre;+1 d'attaque sur la ligne;0;17;10;11
-Passif;Corne de guerre;+1 d'attaque sur la ligne;0;18;10;11
-Passif;Diversion;Si une carte passive doit etre detruite, detruiser diversion a la place;0;19;14;11
-Passif;Gaz toxique;-1 d'attaque pour les creatures adverses sur cette ligne;0;20;12;11
-Passif;Armure;+4 PV supplementaire;0;21;16;11
-Passif;Deviation;Cette carte bloque l'attaque directe, si elle est attaque elle detruit son adversaire;0;22;13;11
-Passif;Porte étendare;+2 d'attaque sur la ligne et -1 d'attaque sur les lignes adjacente.;0;23;11;11
-Passif;Bouclier;Bloque les attaques contre la creature;0;24;15;11
+Instantane;Attaque;permet à une créature d'attaquer une fois;0;9;0;9
+Instantane;Attaque;permet à une créature d'attaquer une fois;0;10;0;9
+Instantane;Attaque;permet à une créature d'attaquer une fois;0;11;0;9
+Instantane;Attaque;permet à une créature d'attaquer une fois;0;12;0;9
+Instantane;Attaque;permet à une créature d'attaquer une fois;0;13;0;9
+Instantane;Fortifiant;+2 d'attaque pour une créature;0;14;2;10
+Instantane;Pérmutation;Change une créature de ligne;0;15;3;10
+Instantane;Echange;Echangez une de vos créatures avec la créature d'en face;0;16;1;10
+Passif;Corne de guerre;+1 d'attaque pour votre créature sur la ligne;0;17;10;11
+Passif;Corne de guerre;+1 d'attaque pour votre créature sur la ligne;0;18;10;11
+Passif;Diversion;Si une carte passive doit être détruite, detruisez diversion à la place;0;19;14;11
+Passif;Gaz toxique;-1 d'attaque pour les créatures adverses sur cette ligne;0;20;12;11
+Passif;Armure;+4 PV supplémentaires;0;21;16;11
+Passif;Deviation;Cette carte bloque l'attaque directe, si elle est attaquée elle détruit son adversaire;0;22;13;11
+Passif;Porte étendard;+2 d'attaque sur la ligne et -1 d'attaque sur les lignes adjacentes.;0;23;11;11
+Passif;Bouclier;Bloque les attaques contre votre créature sur cette ligne;0;24;15;11

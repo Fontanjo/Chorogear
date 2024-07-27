@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class PlayerManager : MonoBehaviour
@@ -12,14 +13,21 @@ public class PlayerManager : MonoBehaviour
 
     public int hp = 10;
 
+    [SerializeField] private Image avatarImage;
+
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private GameObject targetButton;
+
+    [SerializeField] private string player_name = "";
 
     // Start is called before the first frame update
     void Start()
     {
         UpdateTexts();
         targetButton.SetActive(false);
+
+        int player_image = PlayerPrefs.GetInt(player_name);
+        avatarImage.overrideSprite = CardImagesManager.Instance.GetAvatarImage(player_image);
     }
 
     public SO_Deck Deck()

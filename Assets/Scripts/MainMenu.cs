@@ -9,7 +9,7 @@ public class MainMenu : MonoBehaviour
     public void PlayGame ()
     {
         SoundManager.Instance.ButtonClicked();
-        SceneManager.LoadScene("MainGame");
+        SceneManager.LoadScene("CharacterSelection");
     }
 
     public void QuitGame ()

@@ -35,6 +35,12 @@ public class CardImagesManager : MonoBehaviour
     
     [Header("Default image")]
     [SerializeField] private Sprite defaultImage;
+
+    [Header("Avatars")]
+    [SerializeField] private Sprite char_00;
+    [SerializeField] private Sprite char_01;
+    [SerializeField] private Sprite char_02;
+    [SerializeField] private Sprite char_03;
     
     public Sprite GetCardImage(int cardID)
     {
@@ -90,6 +96,23 @@ public class CardImagesManager : MonoBehaviour
             default:
                 Debug.Log("No image set for this card");
                 return defaultImage;
+        }
+    }
+
+    public Sprite GetAvatarImage(int cardID)
+    {
+        switch (cardID)
+        {
+            case 0:
+                return char_00;
+            case 1:
+                return char_01;
+            case 2:
+                return char_02;
+            case 3:
+                return char_03;
+            default:
+                return char_00;
         }
     }
 
