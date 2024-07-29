@@ -142,7 +142,6 @@ public class GameManager : MonoBehaviour
     // Move the game to the next state
     public void NextState()
     {
-
         List<GameObject> toDestroy = new List<GameObject>();
         SO_Deck current_player_deck = p1.deck; // initialize with p1, possibly change in switch
 
@@ -188,6 +187,8 @@ public class GameManager : MonoBehaviour
         // Reset max # of moves
         ResetRemainingMoves();
 
+        // Update values (likely only the one depending on attacking/defending)
+        UpdateActualValues();
     }
 
     // return current state (p1 or p2 playing)
@@ -525,6 +526,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Apply passiv effects to update card values
+    private void UpdateActualValues()
+    {
+        bool p1_attacking = currentState == State.PLAYER1;
+
+        for (int i = 0; i < boardP1.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardP1.GetLength(1); j++)
+            {
+                if (boardP1[i, j] != null)
+                {
+                    boardP1[i, j].UpdateActualValue(boardP1, boardP2, i, j, p1_attacking);
+                }
+            }
+        }
+
+        for (int i = 0; i < boardP2.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardP2.GetLength(1); j++)
+            {
+                if (boardP2[i, j] != null)
+                {
+                    boardP2[i, j].UpdateActualValue(boardP2, boardP1, i, j, !p1_attacking);
+                }
+            }
+        }
+    }
+
     public void PlaceSelectedCard(Transform parent, int row, int col)
     {
         // Don't do anything if no cards selected
@@ -601,12 +630,13 @@ public class GameManager : MonoBehaviour
         DeselectCard();
         HideSelectors();
 
-        // TODO: apply effects if any (or here never?)
+        // Apply effects if any
+        UpdateActualValues();
     }
 
     public void PermutateSelectedCard(Transform parent, int row, int col)
     {
-        // TODO: move card (marked for effect) here
+        // Move card (marked for effect) here
         // Don't do anything if no cards selected
         if (selectedEffectCard == null)
             return;
@@ -651,6 +681,9 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
+
+        // Apply effects if any
+        UpdateActualValues();
     }
 
     public void MarkForEffect(CardManager cm)
@@ -666,7 +699,7 @@ public class GameManager : MonoBehaviour
         int col = (int)car_pos.y;
 
 
-        // TODO: Only show depending on effect
+        // Only show depending on effect
         switch (selectedCard.cardEffectId) // Effect is on the card used, not on the one just selected on the board
         {
             case 0: // Attack
@@ -733,19 +766,19 @@ public class GameManager : MonoBehaviour
                 // Debug.Log("Attacking card on (" + def_pos.x + "," + def_pos.y + ")");
                 // TODO: consider modifiers
                 // Apply passiv effect
-                int attack_value = selectedEffectCard.cardValue;
-                attack_value += PassiveEffectOnRowN((int)att_pos[ROW], currentState);
+                int attack_value = selectedEffectCard.cardActualValue;
+                // attack_value += PassivEffectOnRowN((int)att_pos[ROW], currentState);
                 // Assume attack card is a creature, so at col 0
                 if ((int)att_pos[COL] != CREATURE_COL)
                     Debug.LogError("Attacking with a non-creature card");
-                int defense_value = cm.cardValue;
-                if ((int)def_pos[COL] == CREATURE_COL)
-                    defense_value += PassiveEffectOnRowN((int)def_pos[ROW], OppositeState(currentState));
+                int defense_value = cm.cardActualValue;
+                // if ((int)def_pos[COL] == CREATURE_COL)
+                //     defense_value += PassivEffectOnRowN((int)def_pos[ROW], OppositeState(currentState));
                 // Check if effects changes value
-                if (cm.cardEffectId == 23) // +1 in defense
-                {
-                    defense_value += 1;
-                }
+                // if (cm.cardEffectId == 23) // +1 in defense
+                // {
+                //     defense_value += 1;
+                // }
                 if (selectedEffectCard.cardEffectId == 21) // Match stronger opponent power in attack
                 {
                     if (defense_value > attack_value)
@@ -840,7 +873,7 @@ public class GameManager : MonoBehaviour
                         boardP2[(int)att_pos[ROW], (int)att_pos[COL]] = cm;
                         break;
                 }
-                // TODO: exchange on UI
+                // Exchange on UI
                 Transform tempParent = selectedEffectCard.transform.parent;
                 selectedEffectCard.transform.SetParent(cm.transform.parent);
                 selectedEffectCard.transform.localPosition = new Vector3(0, 0, 0);
@@ -875,7 +908,6 @@ public class GameManager : MonoBehaviour
             CardManager[,] ownBoard = OwnBoard(currentState);
             for (int i = 0; i < ownBoard.GetLength(ROW); i++)
             {
-                // TODO: add to attack to player
                 // Skip self
                 if (i == (int)att_pos[ROW])
                 {
@@ -908,7 +940,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // TODO: Implement other effects
+        // Apply effects if any
+        UpdateActualValues();
     }
 
     public void MarkPlayerForTarget(PlayerManager pm)
@@ -937,8 +970,8 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    int attack_value = selectedEffectCard.cardValue;
-                    attack_value += PassiveEffectOnRowN((int)att_pos[ROW], currentState);
+                    int attack_value = selectedEffectCard.cardActualValue;
+                    // attack_value += PassivEffectOnRowN((int)att_pos[ROW], currentState);
                     pm.TakeDamage(attack_value);
                 }
                 break;
@@ -993,7 +1026,7 @@ public class GameManager : MonoBehaviour
         // TODO: Apply effect
     }
 
-    private int PassiveEffectOnRowN(int row, State player)
+    private int PassivEffectOnRowN(int row, State player)
     {
         int v = 0;
 
@@ -1137,6 +1170,19 @@ public class GameManager : MonoBehaviour
                 return p2.deck;
             default:
                 return p1.deck;
+        }
+    }
+
+    private PlayerManager OwnPlayer(State player)
+    {
+        switch (player)
+        {
+            case State.PLAYER1:
+                return p1;
+            case State.PLAYER2:
+                return p2;
+            default:
+                return p1;
         }
     }
 

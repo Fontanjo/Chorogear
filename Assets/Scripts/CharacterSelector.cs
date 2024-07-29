@@ -26,12 +26,15 @@ public class CharacterSelector : MonoBehaviour
 
     void Start()
     {
+        Panel1.SetActive(true);
+        Panel2.SetActive(false);
+        p1ChoiceObject.SetActive(false);
+        p2ChoiceObject.SetActive(false);
         StartCoroutine(CountdownP1());
     }
 
     private IEnumerator CountdownP1()
-    {
-       
+    {  
             yield return new WaitForSeconds(2.5f);
 
             Panel1.SetActive(false);

@@ -24,7 +24,8 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private Image backgroundImage;
 
     public int cardId;
-    public int cardValue;
+    public int cardBaseValue;
+    public int cardActualValue;
     public int cardInitialValue;
     public int cardEffectId;
     public int cardAudioId;
@@ -38,11 +39,9 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         backgroundImage.overrideSprite = CardImagesManager.Instance.GetCardImage(id);
 
         cardInitialValue = val;
-        cardValue = val;
-        if (cardValue > 0)
-            valueText.text = "" + cardValue;
-        else
-            valueText.text = "";
+        cardBaseValue = val;
+        cardActualValue = val;
+        UpdateValueText();
 
         cardType = type;
 
@@ -60,16 +59,110 @@ public class CardManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         targetButton.SetActive(false);
     }
 
+    private int CREATURE_COL = 0;
+    // private int PASSIV_COL = 1;
+    public void UpdateActualValue(CardManager[,] ownBoard, CardManager[,] opponentBoard, int row, int col, bool attacking)
+    {
+        // TODO: compute using all possible effects
+
+        // Only update for creature cards
+        if (col != CREATURE_COL)
+        {
+            return;
+        }
+
+        int v = 0;
+
+        // CardManager[,] board = OwnBoard(player);
+        // CardManager[,] opponentBoard = OwnBoard(OppositeState(player));
+
+        // Passiv on same line
+        if (ownBoard[row, 1] != null)
+        {
+            switch (ownBoard[row, 1].cardEffectId)
+            {
+                case 10: // +1 attack on line
+                    v += 1;
+                    break;
+                case 11: // +2 attack on line, -1 attack on adjecent lines
+                    v += 2;
+                    break;
+            }
+        }
+
+        // Passive line above
+        if (row >= 1 && ownBoard[row - 1, 1] != null)
+        {
+            switch (ownBoard[row - 1, 1].cardEffectId)
+            {
+                case 11: // +2 attack on line, -1 attack on adjecent lines
+                    v -= 1;
+                    break;
+            }
+        }
+
+        // Passive line below
+        if (row <= 1 && ownBoard[row + 1, 1] != null)
+        {
+            switch (ownBoard[row + 1, 1].cardEffectId)
+            {
+                case 11: // +2 attack on line, -1 attack on adjecent lines
+                    v -= 1;
+                    break;
+            }
+        }
+
+        // Opponent, same line
+        if (opponentBoard[row, 1] != null)
+        {
+            switch (opponentBoard[row, 1].cardEffectId)
+            {
+                case 12: // -1 attack for opponent on line
+                    v -= 1;
+                    break;
+            }
+        }
+
+        // Card effect
+        switch (cardEffectId)
+        {
+            case 23: // +1 when defending
+                if (!attacking)
+                {
+                    v += 1;
+                }
+                break;
+        }
+
+
+        // Update value
+        cardActualValue = cardBaseValue + v;
+
+
+        UpdateValueText();
+    }
+
+    public void UpdateValueText()
+    {        
+        if (cardActualValue > 0)
+            valueText.text = "" + cardActualValue;
+        else
+            valueText.text = "";
+    }
+
     public void IncrementValue(int val = 1)
     {
-        cardValue += val;
-        valueText.text = "" + cardValue;
+        cardBaseValue += val;
+        cardActualValue += val;
+        UpdateValueText();
     }
 
     public void SetHPTo(int val)
     {
-        cardValue = 0;
-        valueText.text = "" + cardValue;
+        int old_val = cardBaseValue;
+        cardBaseValue = 0;
+        cardActualValue -= old_val;
+        UpdateValueText();
     }
 
     //Detect if the Cursor starts to pass over the GameObject

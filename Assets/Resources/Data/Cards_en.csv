@@ -1,0 +1,24 @@
+Creature;Loup;If a creature attacking this card survives, it's power is reduced to 0;2;1;22;1
+Creature;Père grenouille;Gain +1 power on successfull attack;1;2;20;2
+Creature;Bunnyfox;If this card attacks a stronger one, both are destroyed;1;3;21;3
+Creature;Slime;+1 if one of your other creatures attacks;1;4;24;4
+Creature;Crâne d'oeuf;;2;5;-1;5
+Creature;Queen of cheese;+1 when defending;2;6;23;6
+Creature;Firewolf;;3;7;-1;7
+Creature;Deerbunny;;3;8;-1;8
+Instantane;Attaque;Allows a creature to attack;0;9;0;9
+Instantane;Attaque;Allows a creature to attack;0;10;0;9
+Instantane;Attaque;Allows a creature to attack;0;11;0;9
+Instantane;Attaque;Allows a creature to attack;0;12;0;9
+Instantane;Attaque;Allows a creature to attack;0;13;0;9
+Instantane;Fortifiant;+2 to a creature;0;14;2;10
+Instantane;Pérmutation;Move one of your creatures to an empty row;0;15;3;10
+Instantane;Echange;Exchange one of your creatures with the one in front of it;0;16;1;10
+Passif;Corne de guerre;+1 to the creature on the same line;0;17;10;11
+Passif;Corne de guerre;+1 to the creature on the same line;0;18;10;11
+Passif;Diversion;If a passiv card must be destroyed, destroy this instead;0;19;14;11
+Passif;Gaz toxique;-1 to the enemy creatures on this line;0;20;12;11
+Passif;Armure;+4 HP to the player. Remove 4 HP if this card is destroyed in an attack;0;21;16;11
+Passif;Deviation;Block an attack to the player from this line. If an attack is attempted, the enemy creature is destroyed;0;22;13;11
+Passif;Porte étendard;+2 the the creature on the same line, -1 to the creatures on adjecentes lines;0;23;11;11
+Passif;Bouclier;Blocks the attacks on the creature on its line;0;24;15;11

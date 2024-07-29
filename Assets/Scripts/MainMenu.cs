@@ -5,7 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-   
+    [SerializeField] private GameObject settingsPanel;
+
+    void Start()
+    {
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(false);
+        }
+    }
+    
     public void PlayGame ()
     {
         SoundManager.Instance.ButtonClicked();
